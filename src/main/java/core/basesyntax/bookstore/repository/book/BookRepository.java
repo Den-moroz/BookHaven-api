@@ -1,4 +1,4 @@
-package core.basesyntax.bookstore.repository;
+package core.basesyntax.bookstore.repository.book;
 
 import core.basesyntax.bookstore.model.Book;
 import org.springframework.data.jpa.repository.JpaRepository;

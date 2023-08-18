@@ -1,6 +1,7 @@
 package core.basesyntax.bookstore.controller;
 
 import core.basesyntax.bookstore.dto.BookDto;
+import core.basesyntax.bookstore.dto.BookSearchParametersDto;
 import core.basesyntax.bookstore.dto.CreateBookRequestDto;
 import core.basesyntax.bookstore.service.BookService;
 import java.util.List;
@@ -34,6 +35,11 @@ public class BookController {
     @GetMapping(path = "/{id}")
     public BookDto getBookById(@PathVariable Long id) {
         return bookService.getBookById(id);
+    }
+
+    @GetMapping(path = "/search")
+    public List<BookDto> searchBooks(BookSearchParametersDto searchParameters) {
+        return bookService.search(searchParameters);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
