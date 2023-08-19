@@ -2,13 +2,13 @@ package core.basesyntax.bookstore.repository.book.spec;
 
 import core.basesyntax.bookstore.model.Book;
 import core.basesyntax.bookstore.repository.SpecificationProvider;
-import java.util.Arrays;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 @Component
-public class AuthorSpecificationProvider implements SpecificationProvider<Book> {
-    private static final String KEY = "author";
+public class ToPriceSpecificationProvider implements SpecificationProvider<Book> {
+    private static final String KEY = "toPrice";
+    private static final String NAME_OF_COLUMN = "price";
 
     @Override
     public String getKey() {
@@ -17,6 +17,8 @@ public class AuthorSpecificationProvider implements SpecificationProvider<Book> 
 
     @Override
     public Specification<Book> getSpecification(Object... params) {
-        return (root, query, criteriaBuilder) -> root.get(KEY).in(Arrays.stream(params).toArray());
+        Integer toPrice = (Integer) params[0];
+        return (root, query, criteriaBuilder) -> criteriaBuilder
+                .lessThanOrEqualTo(root.get(NAME_OF_COLUMN), toPrice);
     }
 }

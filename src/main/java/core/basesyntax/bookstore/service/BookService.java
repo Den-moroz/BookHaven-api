@@ -12,7 +12,9 @@ public interface BookService {
 
     BookDto getBookById(Long id);
 
-    List<BookDto> search(BookSearchParametersDto params);
+    BookDto updateById(Long id, CreateBookRequestDto bookRequestDto);
+
+    List<BookDto> findByParams(BookSearchParametersDto params);
 
     void deleteById(Long id);
 }

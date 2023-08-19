@@ -3,8 +3,8 @@ package core.basesyntax.bookstore.repository.book;
 import core.basesyntax.bookstore.model.Book;
 import core.basesyntax.bookstore.repository.SpecificationProvider;
 import core.basesyntax.bookstore.repository.SpecificationProviderManager;
-import lombok.RequiredArgsConstructor;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
@@ -18,6 +18,7 @@ public class BookSpecificationProviderManager implements SpecificationProviderMa
                 .filter(p -> p.getKey().equals(key))
                 .findFirst()
                 .orElseThrow(() ->
-                        new RuntimeException("Can't find correct specifications provider for key " + key));
+                        new RuntimeException("Can't find correct specifications provider for key "
+                                + key));
     }
 }

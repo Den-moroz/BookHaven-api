@@ -39,7 +39,14 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> search(BookSearchParametersDto params) {
+    public BookDto updateById(Long id, CreateBookRequestDto bookRequestDto) {
+        Book updatedBook = bookMapper.toModel(bookRequestDto);
+        updatedBook.setId(id);
+        return bookMapper.toDto(bookRepository.save(updatedBook));
+    }
+
+    @Override
+    public List<BookDto> findByParams(BookSearchParametersDto params) {
         Specification<Book> bookSpecification = bookSpecificationBuilder.build(params);
         return bookRepository.findAll(bookSpecification).stream()
                 .map(bookMapper::toDto)
