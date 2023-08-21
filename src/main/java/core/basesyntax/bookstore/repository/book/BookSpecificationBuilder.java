@@ -4,6 +4,7 @@ import core.basesyntax.bookstore.dto.BookSearchParametersDto;
 import core.basesyntax.bookstore.model.Book;
 import core.basesyntax.bookstore.repository.SpecificationBuilder;
 import core.basesyntax.bookstore.repository.SpecificationProviderManager;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
@@ -21,24 +22,28 @@ public class BookSpecificationBuilder implements
     @Override
     public Specification<Book> build(BookSearchParametersDto searchParametersDto) {
         Specification<Book> specification = Specification.where(null);
-        if (searchParametersDto.title() != null && searchParametersDto.title().length > 0) {
+        if (hasValue(searchParametersDto.title())) {
             specification = specification.and(createSpecification(KEY_FOR_TITLE,
                     searchParametersDto.title()));
         }
-        if (searchParametersDto.author() != null && searchParametersDto.author().length > 0) {
+        if (hasValue(searchParametersDto.author())) {
             specification = specification.and(createSpecification(KEY_FOR_AUTHOR,
                     searchParametersDto.author()));
         }
-        if (searchParametersDto.fromPrice() != null) {
+        if (Objects.nonNull(searchParametersDto.fromPrice())) {
             specification = specification.and(createSpecification(KEY_FOR_PRICE_FROM,
                     searchParametersDto.fromPrice()));
         }
-        if (searchParametersDto.toPrice() != null) {
+        if (Objects.nonNull(searchParametersDto.toPrice())) {
             specification = specification.and(createSpecification(KEY_FOR_PRICE_TO,
                     searchParametersDto.toPrice()));
         }
 
         return specification;
+    }
+
+    private boolean hasValue(String[] array) {
+        return Objects.requireNonNullElse(array, new String[0]).length > 0;
     }
 
     private Specification<Book> createSpecification(String key, Object... value) {
