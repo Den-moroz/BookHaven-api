@@ -14,17 +14,4 @@ public class BookStoreApplication {
     public static void main(String[] args) {
         SpringApplication.run(BookStoreApplication.class, args);
     }
-
-    @Bean
-    public CommandLineRunner commandLineRunner(BookService bookService) {
-        return args -> {
-            Book newBook = new Book();
-            newBook.setTitle("Kobzar");
-            newBook.setPrice(BigDecimal.valueOf(100));
-            newBook.setAuthor("Taras Schevchenko");
-            newBook.setIsbn("a1b");
-            bookService.save(newBook);
-            bookService.findAll().forEach(System.out::println);
-        };
-    }
 }
