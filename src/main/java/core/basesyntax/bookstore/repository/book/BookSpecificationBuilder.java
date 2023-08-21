@@ -22,25 +22,28 @@ public class BookSpecificationBuilder implements
     public Specification<Book> build(BookSearchParametersDto searchParametersDto) {
         Specification<Book> specification = Specification.where(null);
         if (searchParametersDto.title() != null && searchParametersDto.title().length > 0) {
-            specification = specification.and(bookSpecificationProviderManager
-                    .getSpecificationProvider(KEY_FOR_TITLE)
-                    .getSpecification(searchParametersDto.title()));
+            specification = specification.and(createSpecification(KEY_FOR_TITLE,
+                    searchParametersDto.title()));
         }
         if (searchParametersDto.author() != null && searchParametersDto.author().length > 0) {
-            specification = specification.and(bookSpecificationProviderManager
-                    .getSpecificationProvider(KEY_FOR_AUTHOR)
-                    .getSpecification(searchParametersDto.author()));
+            specification = specification.and(createSpecification(KEY_FOR_AUTHOR,
+                    searchParametersDto.author()));
         }
         if (searchParametersDto.fromPrice() != null) {
-            specification = specification.and(bookSpecificationProviderManager
-                    .getSpecificationProvider(KEY_FOR_PRICE_FROM)
-                    .getSpecification(searchParametersDto.fromPrice()));
+            specification = specification.and(createSpecification(KEY_FOR_PRICE_FROM,
+                    searchParametersDto.fromPrice()));
         }
         if (searchParametersDto.toPrice() != null) {
-            specification = specification.and(bookSpecificationProviderManager
-                    .getSpecificationProvider(KEY_FOR_PRICE_TO)
-                    .getSpecification(searchParametersDto.toPrice()));
+            specification = specification.and(createSpecification(KEY_FOR_PRICE_TO,
+                    searchParametersDto.toPrice()));
         }
+
         return specification;
+    }
+
+    private Specification<Book> createSpecification(String key, Object... value) {
+        return bookSpecificationProviderManager
+                    .getSpecificationProvider(key)
+                    .getSpecification(value);
     }
 }
