@@ -34,6 +34,7 @@ public class BookController {
         return bookService.save(bookDto);
     }
 
+    @GetMapping
     @Operation(summary = "Get all books", description = "Get a list of all available books, "
             + "pagination and sorting are also included")
     public List<BookDto> getAll(Pageable pageable) {
