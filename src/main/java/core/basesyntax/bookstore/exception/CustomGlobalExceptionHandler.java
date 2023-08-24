@@ -21,6 +21,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     private static final String TIMESTAMP = "timestamp";
     private static final String STATUS = "status";
     private static final String ERRORS = "errors";
+    private static final String SPACE = " ";
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
@@ -56,7 +57,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         if (e instanceof FieldError) {
             String field = ((FieldError) e).getField();
             String message = e.getDefaultMessage();
-            return field + " " + message;
+            return field + SPACE + message;
         }
         return e.getDefaultMessage();
     }

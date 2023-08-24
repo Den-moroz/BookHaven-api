@@ -2,38 +2,32 @@ package core.basesyntax.bookstore.validation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import java.lang.reflect.Field;
+import org.apache.commons.beanutils.BeanUtils;
 
 public class FieldMatchValidator implements ConstraintValidator<FieldMatch, Object> {
-    private String field1;
-    private String field2;
+    private String firstFieldName;
+    private String secondFieldName;
 
     @Override
     public void initialize(FieldMatch constraintAnnotation) {
-        field1 = constraintAnnotation.first();
-        field2 = constraintAnnotation.second();
+        firstFieldName = constraintAnnotation.first();
+        secondFieldName = constraintAnnotation.second();
     }
 
     @Override
-    public boolean isValid(Object value, ConstraintValidatorContext constraintValidatorContext) {
-        if (value == null) {
-            return false;
-        }
+    public boolean isValid(Object value, ConstraintValidatorContext context) {
         try {
-            Class<?> clazz = value.getClass();
-            Field firstField = clazz.getDeclaredField(field1);
-            Field secondField = clazz.getDeclaredField(field2);
-
-            firstField.setAccessible(true);
-            secondField.setAccessible(true);
-
-            Object firstValue = firstField.get(value);
-            Object secondValue = secondField.get(value);
+            Object firstValue = BeanUtils.getProperty(value, firstFieldName);
+            Object secondValue = BeanUtils.getProperty(value, secondFieldName);
 
             return firstValue == null && secondValue == null
                     || firstValue != null && firstValue.equals(secondValue);
-        } catch (Exception ignore) { }
-
-        return false;
+        } catch (Exception e) {
+            context.disableDefaultConstraintViolation();
+            context.buildConstraintViolationWithTemplate(
+                    "An error occurred during field validation.")
+                    .addConstraintViolation();
+        }
+        return true;
     }
 }

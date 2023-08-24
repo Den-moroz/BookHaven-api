@@ -3,7 +3,7 @@ package core.basesyntax.bookstore.controller;
 import core.basesyntax.bookstore.dto.UserLoginRequestDto;
 import core.basesyntax.bookstore.dto.UserLoginResponseDto;
 import core.basesyntax.bookstore.dto.UserRegistrationRequestDto;
-import core.basesyntax.bookstore.dto.UserResponseDto;
+import core.basesyntax.bookstore.dto.UserRegistrationResponseDto;
 import core.basesyntax.bookstore.exception.RegistrationException;
 import core.basesyntax.bookstore.security.AuthenticationService;
 import core.basesyntax.bookstore.service.UserService;
@@ -31,7 +31,8 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     @ResponseBody
-    public UserResponseDto register(@RequestBody @Valid UserRegistrationRequestDto request)
+    public UserRegistrationResponseDto register(
+            @RequestBody @Valid UserRegistrationRequestDto request)
             throws RegistrationException {
         return userService.register(request);
     }

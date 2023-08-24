@@ -6,9 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
-
-
 @Data
+@FieldMatch(first = "password", second = "repeatPassword", message = "Passwords do not match")
 public class UserRegistrationRequestDto {
     @NotBlank
     @Email

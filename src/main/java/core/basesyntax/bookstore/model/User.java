@@ -2,7 +2,6 @@ package core.basesyntax.bookstore.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -10,6 +9,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.Data;
 import lombok.ToString;
 import org.hibernate.annotations.SQLDelete;
@@ -17,9 +19,6 @@ import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
 @Entity
@@ -46,16 +45,18 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
     @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted = false;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<>();
-        for (Role role : new HashSet<>(this.roles)) {
-            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName().toString()));
+
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority(role.getName().toString()));
         }
+
         return authorities;
     }
 

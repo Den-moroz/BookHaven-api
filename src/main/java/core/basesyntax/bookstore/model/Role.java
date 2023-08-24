@@ -7,10 +7,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
-import java.util.Set;
 
 @Data
 @Entity
@@ -19,14 +17,12 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = true)
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false, unique = true)
     private RoleName name;
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
 
     public enum RoleName {
-        USER,
-        ADMIN
+        ROLE_USER,
+        ROLE_ADMIN
     }
 }

@@ -3,7 +3,7 @@ package core.basesyntax.bookstore.dto;
 import lombok.Data;
 
 @Data
-public class UserResponseDto {
+public class UserRegistrationResponseDto {
     private Long id;
     private String email;
     private String firstName;
