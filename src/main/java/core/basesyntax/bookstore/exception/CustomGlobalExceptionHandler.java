@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -51,6 +52,18 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         body.put(ERRORS, List.of(ex.getMessage()));
         return handleExceptionInternal(ex, body, new HttpHeaders(),
                 HttpStatus.INTERNAL_SERVER_ERROR, request);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    protected ResponseEntity<Object> handleAccessDeniedException(
+            AccessDeniedException ex,
+            WebRequest request
+    ) {
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put(TIMESTAMP, LocalDateTime.now());
+        body.put(STATUS, HttpStatus.FORBIDDEN);
+        body.put(ERRORS, List.of("Access denied"));
+        return new ResponseEntity<>(body, new HttpHeaders(), HttpStatus.FORBIDDEN);
     }
 
     private String getErrorMessage(ObjectError e) {
