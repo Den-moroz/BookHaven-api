@@ -45,4 +45,10 @@ public class BookSpecificationBuilder implements
     private boolean hasValue(String[] array) {
         return Objects.requireNonNullElse(array, new String[0]).length > 0;
     }
+
+    private Specification<Book> createSpecification(String key, Object... value) {
+        return bookSpecificationProviderManager
+                .getSpecificationProvider(key)
+                .getSpecification(value);
+    }
 }
