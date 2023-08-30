@@ -48,7 +48,7 @@ public class BookSpecificationBuilder implements
 
     private Specification<Book> createSpecification(String key, Object... value) {
         return bookSpecificationProviderManager
-                    .getSpecificationProvider(key)
-                    .getSpecification(value);
+                .getSpecificationProvider(key)
+                .getSpecification(value);
     }
 }
