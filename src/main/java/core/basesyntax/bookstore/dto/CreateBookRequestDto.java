@@ -22,6 +22,4 @@ public class CreateBookRequestDto {
     @Min(0)
     private BigDecimal price;
     @Length(min = 10, max = 255)
-    private String description;
-    private String coverImage;
 }

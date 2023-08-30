@@ -12,6 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,8 +36,6 @@ public class BookController {
     @PostMapping
     @Operation(summary = "Create a new book")
     public BookDto createBook(@RequestBody @Valid CreateBookRequestDto bookDto) {
-        return bookService.save(bookDto);
-    }
 
     @GetMapping
     @Operation(summary = "Get all books", description = "Get a list of all available books, "
@@ -45,6 +46,11 @@ public class BookController {
 
     @GetMapping(path = "/{id}")
     @Operation(summary = "Get book by id")
+    public List<BookDto> getAll() {
+        return bookService.findAll();
+    }
+
+    @GetMapping(path = "/{id}")
     public BookDto getBookById(@PathVariable Long id) {
         return bookService.getBookById(id);
     }
