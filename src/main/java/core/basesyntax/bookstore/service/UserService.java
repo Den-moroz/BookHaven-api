@@ -1,7 +1,7 @@
 package core.basesyntax.bookstore.service;
 
-import core.basesyntax.bookstore.dto.UserRegistrationRequestDto;
-import core.basesyntax.bookstore.dto.UserRegistrationResponseDto;
+import core.basesyntax.bookstore.dto.user.UserRegistrationRequestDto;
+import core.basesyntax.bookstore.dto.user.UserRegistrationResponseDto;
 import core.basesyntax.bookstore.exception.RegistrationException;
 
 public interface UserService {

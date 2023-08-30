@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-categories-column
+      author: denis
+      changes:
+        - addColumn:
+            tableName: book
+            columns:
+              - column:
+                  name: categories
+                  type: bigint
+                  constraints:
+                    nullable: true
+        - addForeignKeyConstraint:
+            baseColumnNames: categories
+            baseTableName: book
+            constraintName: fk_book_category
+            referencedColumnNames: id
+            referencedTableName: category

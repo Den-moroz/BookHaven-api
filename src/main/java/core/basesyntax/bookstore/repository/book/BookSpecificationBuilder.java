@@ -1,6 +1,6 @@
 package core.basesyntax.bookstore.repository.book;
 
-import core.basesyntax.bookstore.dto.BookSearchParametersDto;
+import core.basesyntax.bookstore.dto.book.BookSearchParametersDto;
 import core.basesyntax.bookstore.model.Book;
 import core.basesyntax.bookstore.repository.SpecificationBuilder;
 import core.basesyntax.bookstore.repository.SpecificationProviderManager;

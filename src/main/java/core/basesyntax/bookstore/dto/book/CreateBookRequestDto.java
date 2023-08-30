@@ -1,4 +1,4 @@
-package core.basesyntax.bookstore.dto;
+package core.basesyntax.bookstore.dto.book;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

@@ -1,7 +1,7 @@
 package core.basesyntax.bookstore.service.impl;
 
-import core.basesyntax.bookstore.dto.UserRegistrationRequestDto;
-import core.basesyntax.bookstore.dto.UserRegistrationResponseDto;
+import core.basesyntax.bookstore.dto.user.UserRegistrationRequestDto;
+import core.basesyntax.bookstore.dto.user.UserRegistrationResponseDto;
 import core.basesyntax.bookstore.exception.RegistrationException;
 import core.basesyntax.bookstore.mapper.UserMapper;
 import core.basesyntax.bookstore.model.Role;

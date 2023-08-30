@@ -1,8 +1,9 @@
 package core.basesyntax.bookstore.service.impl;
 
-import core.basesyntax.bookstore.dto.BookDto;
-import core.basesyntax.bookstore.dto.BookSearchParametersDto;
-import core.basesyntax.bookstore.dto.CreateBookRequestDto;
+import core.basesyntax.bookstore.dto.book.BookDto;
+import core.basesyntax.bookstore.dto.book.BookSearchParametersDto;
+import core.basesyntax.bookstore.dto.book.CreateBookRequestDto;
+import core.basesyntax.bookstore.exception.EntityNotFoundException;
 import core.basesyntax.bookstore.mapper.BookMapper;
 import core.basesyntax.bookstore.model.Book;
 import core.basesyntax.bookstore.repository.book.BookRepository;
@@ -36,7 +37,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto getBookById(Long id) {
-        return bookMapper.toDto(bookRepository.getBookById(id));
+        Book book = bookRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Book not found with id: " + id));
+        return bookMapper.toDto(book);
     }
 
     @Override

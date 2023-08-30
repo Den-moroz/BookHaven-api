@@ -1,8 +1,8 @@
 package core.basesyntax.bookstore.service;
 
-import core.basesyntax.bookstore.dto.BookDto;
-import core.basesyntax.bookstore.dto.BookSearchParametersDto;
-import core.basesyntax.bookstore.dto.CreateBookRequestDto;
+import core.basesyntax.bookstore.dto.book.BookDto;
+import core.basesyntax.bookstore.dto.book.BookSearchParametersDto;
+import core.basesyntax.bookstore.dto.book.CreateBookRequestDto;
 import java.util.List;
 import org.springframework.data.domain.Pageable;
 
