@@ -7,10 +7,11 @@ import core.basesyntax.bookstore.mapper.CategoryMapper;
 import core.basesyntax.bookstore.model.Category;
 import core.basesyntax.bookstore.repository.category.CategoryRepository;
 import core.basesyntax.bookstore.service.CategoryService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
@@ -19,9 +20,8 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryMapper categoryMapper;
 
     @Override
-    public List<CategoryDto> findAll() {
-        List<Category> categories = categoryRepository.findAll();
-        return categories.stream()
+    public List<CategoryDto> findAll(Pageable pageable) {
+        return categoryRepository.findAll(pageable).stream()
                 .map(categoryMapper::toDto)
                 .collect(Collectors.toList());
     }
@@ -29,7 +29,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto getById(Long id) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + id));
+                .orElseThrow(
+                        () -> new EntityNotFoundException("Category not found with id: " + id));
         return categoryMapper.toDto(category);
     }
 
@@ -42,7 +43,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto update(Long id, CreateCategoryRequestDto categoryDto) {
         Category existingCategory = categoryRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + id));
+                .orElseThrow(
+                        () -> new EntityNotFoundException("Category not found with id: " + id));
 
         Category updatedCategory = categoryMapper.toModel(categoryDto);
         updatedCategory.setId(existingCategory.getId());
@@ -52,7 +54,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteById(Long id) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Category not found with id: " + id));
+                .orElseThrow(
+                        () -> new EntityNotFoundException("Category not found with id: " + id));
         categoryRepository.delete(category);
     }
 }

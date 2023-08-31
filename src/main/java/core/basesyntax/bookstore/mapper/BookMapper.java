@@ -6,11 +6,12 @@ import core.basesyntax.bookstore.dto.book.BookDtoWithoutCategoryIds;
 import core.basesyntax.bookstore.dto.book.CreateBookRequestDto;
 import core.basesyntax.bookstore.model.Book;
 import core.basesyntax.bookstore.model.Category;
+import java.util.stream.Collectors;
+import core.basesyntax.bookstore.repository.category.CategoryRepository;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
-import java.util.stream.Collectors;
 
 @Mapper(config = MapperConfig.class)
 public interface BookMapper {

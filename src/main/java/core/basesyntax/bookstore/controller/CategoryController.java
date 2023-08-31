@@ -3,14 +3,17 @@ package core.basesyntax.bookstore.controller;
 import core.basesyntax.bookstore.dto.book.BookDtoWithoutCategoryIds;
 import core.basesyntax.bookstore.dto.category.CategoryDto;
 import core.basesyntax.bookstore.dto.category.CreateCategoryRequestDto;
+import core.basesyntax.bookstore.exception.EntityNotFoundException;
 import core.basesyntax.bookstore.mapper.BookMapper;
-import core.basesyntax.bookstore.model.Book;
 import core.basesyntax.bookstore.repository.book.BookRepository;
+import core.basesyntax.bookstore.repository.category.CategoryRepository;
 import core.basesyntax.bookstore.service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,8 +25,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Tag(name = "Category management", description = "Endpoints for managing category")
 @RequiredArgsConstructor
@@ -32,6 +33,7 @@ import java.util.stream.Collectors;
 public class CategoryController {
     private final CategoryService categoryService;
     private final BookRepository bookRepository;
+    private final CategoryRepository categoryRepository;
     private final BookMapper bookMapper;
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -44,8 +46,8 @@ public class CategoryController {
     @GetMapping
     @Operation(summary = "Get all categories", description = "Get a list of all category, "
             + "pagination and sorting are also included")
-    public List<CategoryDto> getAll() {
-        return categoryService.findAll();
+    public List<CategoryDto> getAll(Pageable pageable) {
+        return categoryService.findAll(pageable);
     }
 
     @GetMapping(path = "/{id}")
@@ -72,9 +74,11 @@ public class CategoryController {
     @GetMapping("/{id}/books")
     @Operation(summary = "Get books by category id")
     public List<BookDtoWithoutCategoryIds> getBooksByCategoryId(@PathVariable Long id) {
-        List<Book> books = bookRepository.findAllByCategoryId(id);
-        return books.stream()
+        categoryRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Category not found"));
+
+        return bookRepository.findAllByCategoriesId(id).stream()
                 .map(bookMapper::toDtoWithoutCategories)
-                .collect(Collectors.toList());
+                .toList();
     }
 }
