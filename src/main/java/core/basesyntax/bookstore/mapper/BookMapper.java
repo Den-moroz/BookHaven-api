@@ -6,35 +6,33 @@ import core.basesyntax.bookstore.dto.book.BookDtoWithoutCategoryIds;
 import core.basesyntax.bookstore.dto.book.CreateBookRequestDto;
 import core.basesyntax.bookstore.model.Book;
 import core.basesyntax.bookstore.model.Category;
+import java.util.Set;
 import java.util.stream.Collectors;
-import core.basesyntax.bookstore.repository.category.CategoryRepository;
-import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
+import org.mapstruct.Mapping;
 
 @Mapper(config = MapperConfig.class)
 public interface BookMapper {
     BookDto toDto(Book book);
 
+    @Mapping(target = "categories", source = "categoryIds")
     Book toModel(CreateBookRequestDto bookDto);
 
     BookDtoWithoutCategoryIds toDtoWithoutCategories(Book book);
 
-    @AfterMapping
-    default void setCategoryIds(@MappingTarget BookDto bookDto, Book book) {
-        bookDto.setCategoryIds(book.getCategories().stream()
+    default Set<Long> mapToLongSet(Set<Category> categories) {
+        return categories.stream()
                 .map(Category::getId)
-                .collect(Collectors.toSet()));
+                .collect(Collectors.toSet());
     }
 
-    @Named("bookFromId")
-    default Book bookFromId(Long id) {
-        if (id == null) {
-            return null;
-        }
-        Book book = new Book();
-        book.setId(id);
-        return book;
+    default Set<Category> mapToCategorySet(Set<Long> categoryIds) {
+        return categoryIds.stream()
+                .map(id -> {
+                    Category category = new Category();
+                    category.setId(id);
+                    return category;
+                })
+                .collect(Collectors.toSet());
     }
 }
