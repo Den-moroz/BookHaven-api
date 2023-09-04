@@ -51,6 +51,7 @@ public class CategoryController {
     }
 
     @GetMapping(path = "/{id}")
+    @Operation(summary = "Return category response by id")
     public CategoryDto getCategoryById(@PathVariable Long id) {
         return categoryService.getById(id);
     }
