@@ -1,41 +1,24 @@
 databaseChangeLog:
   - changeSet:
-      id: create-user-table
+      id: create-category-table
       author: denis
       changes:
         - createTable:
-            tableName: user
+            tableName: category
             columns:
               - column:
                   name: id
                   type: bigint
                   autoIncrement: true
                   constraints:
-                    nullable: false
                     primaryKey: true
               - column:
-                  name: email
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-                    unique: true
-              - column:
-                  name: password
+                  name: name
                   type: varchar(255)
                   constraints:
                     nullable: false
               - column:
-                  name: first_name
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: last_name
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: shipping_address
+                  name: description
                   type: varchar(255)
               - column:
                   name: is_deleted
@@ -43,3 +26,6 @@ databaseChangeLog:
                   defaultValueBoolean: false
                   constraints:
                     nullable: false
+        - addUniqueConstraint:
+            tableName: category
+            columnNames: name

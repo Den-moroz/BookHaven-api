@@ -2,8 +2,6 @@ package core.basesyntax.bookstore.repository.category;
 
 import core.basesyntax.bookstore.model.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface CategoryRepository extends JpaRepository<Category, Long>,
-        JpaSpecificationExecutor<Category> {
+public interface CategoryRepository extends JpaRepository<Category, Long> {
 }
