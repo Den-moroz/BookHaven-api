@@ -1,4 +1,4 @@
-package core.basesyntax.bookstore.repository.item;
+package core.basesyntax.bookstore.repository.cartitem;
 
 import core.basesyntax.bookstore.model.CartItem;
 import java.util.Set;

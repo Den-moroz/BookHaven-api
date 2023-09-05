@@ -1,4 +1,4 @@
-package core.basesyntax.bookstore.dto.item;
+package core.basesyntax.bookstore.dto.cartitem;
 
 import lombok.Data;
 

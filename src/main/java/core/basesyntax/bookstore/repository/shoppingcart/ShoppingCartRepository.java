@@ -1,4 +1,4 @@
-package core.basesyntax.bookstore.repository.cart;
+package core.basesyntax.bookstore.repository.shoppingcart;
 
 import core.basesyntax.bookstore.model.ShoppingCart;
 import org.springframework.data.jpa.repository.JpaRepository;

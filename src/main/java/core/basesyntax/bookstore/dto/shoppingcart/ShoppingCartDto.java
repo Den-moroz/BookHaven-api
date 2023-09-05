@@ -1,6 +1,6 @@
-package core.basesyntax.bookstore.dto.cart;
+package core.basesyntax.bookstore.dto.shoppingcart;
 
-import core.basesyntax.bookstore.dto.item.CartItemDto;
+import core.basesyntax.bookstore.dto.cartitem.CartItemDto;
 import java.util.Set;
 import lombok.Data;
 

@@ -1,17 +1,19 @@
 package core.basesyntax.bookstore.service.impl;
 
-import core.basesyntax.bookstore.dto.item.CartItemDto;
-import core.basesyntax.bookstore.dto.item.CreateCartItemDto;
-import core.basesyntax.bookstore.dto.item.UpdateCartItemDto;
+import core.basesyntax.bookstore.dto.cartitem.CartItemDto;
+import core.basesyntax.bookstore.dto.cartitem.CreateCartItemDto;
+import core.basesyntax.bookstore.dto.cartitem.UpdateCartItemDto;
 import core.basesyntax.bookstore.exception.EntityNotFoundException;
 import core.basesyntax.bookstore.mapper.CartItemMapper;
 import core.basesyntax.bookstore.model.CartItem;
 import core.basesyntax.bookstore.model.ShoppingCart;
 import core.basesyntax.bookstore.repository.book.BookRepository;
-import core.basesyntax.bookstore.repository.cart.ShoppingCartRepository;
-import core.basesyntax.bookstore.repository.item.CartItemRepository;
+import core.basesyntax.bookstore.repository.cartitem.CartItemRepository;
+import core.basesyntax.bookstore.repository.shoppingcart.ShoppingCartRepository;
 import core.basesyntax.bookstore.service.CartItemService;
 import core.basesyntax.bookstore.service.UserService;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +41,13 @@ public class CartItemServiceImpl implements CartItemService {
                 .orElseThrow(
                         () -> new EntityNotFoundException("Can't find shopping cart by id: " + id));
         cartItem.setShoppingCart(shoppingCart);
+        List<CartItem> cartItems = new ArrayList<>();
+        cartItems.add(cartItem);
+        if (shoppingCart.getCartItems().isEmpty()) {
+            shoppingCart.setCartItems(cartItems);
+        } else {
+            shoppingCart.getCartItems().add(cartItem);
+        }
         return cartItemMapper.toDto(cartItemRepository.save(cartItem));
     }
 

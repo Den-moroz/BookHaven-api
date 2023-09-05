@@ -1,7 +1,7 @@
 package core.basesyntax.bookstore.mapper;
 
 import core.basesyntax.bookstore.config.MapperConfig;
-import core.basesyntax.bookstore.dto.item.CartItemDto;
+import core.basesyntax.bookstore.dto.cartitem.CartItemDto;
 import core.basesyntax.bookstore.model.CartItem;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;

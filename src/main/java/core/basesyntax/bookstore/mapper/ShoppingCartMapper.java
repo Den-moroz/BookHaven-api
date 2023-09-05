@@ -1,7 +1,7 @@
 package core.basesyntax.bookstore.mapper;
 
 import core.basesyntax.bookstore.config.MapperConfig;
-import core.basesyntax.bookstore.dto.cart.ShoppingCartDto;
+import core.basesyntax.bookstore.dto.shoppingcart.ShoppingCartDto;
 import core.basesyntax.bookstore.model.ShoppingCart;
 import org.mapstruct.Mapper;
 

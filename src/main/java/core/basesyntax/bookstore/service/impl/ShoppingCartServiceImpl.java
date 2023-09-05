@@ -1,12 +1,12 @@
 package core.basesyntax.bookstore.service.impl;
 
-import core.basesyntax.bookstore.dto.cart.ShoppingCartDto;
-import core.basesyntax.bookstore.dto.item.CartItemDto;
-import core.basesyntax.bookstore.dto.item.CreateCartItemDto;
+import core.basesyntax.bookstore.dto.cartitem.CartItemDto;
+import core.basesyntax.bookstore.dto.cartitem.CreateCartItemDto;
+import core.basesyntax.bookstore.dto.shoppingcart.ShoppingCartDto;
 import core.basesyntax.bookstore.exception.EntityNotFoundException;
 import core.basesyntax.bookstore.model.ShoppingCart;
 import core.basesyntax.bookstore.model.User;
-import core.basesyntax.bookstore.repository.cart.ShoppingCartRepository;
+import core.basesyntax.bookstore.repository.shoppingcart.ShoppingCartRepository;
 import core.basesyntax.bookstore.service.CartItemService;
 import core.basesyntax.bookstore.service.ShoppingCartService;
 import core.basesyntax.bookstore.service.UserService;

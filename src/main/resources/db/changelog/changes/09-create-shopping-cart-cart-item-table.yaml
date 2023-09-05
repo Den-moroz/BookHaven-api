@@ -12,7 +12,6 @@ databaseChangeLog:
                   constraints:
                     foreignKeyName: fk_shopping_cart_id
                     references: shopping_cart(user_id)
-                    primaryKey: true
                     nullable: false
               - column:
                   name: cart_item_id
@@ -20,4 +19,5 @@ databaseChangeLog:
                   constraints:
                     foreignKeyName: fk_cart_item_id
                     references: cart_item(id)
+                    primaryKey: true
                     nullable: false

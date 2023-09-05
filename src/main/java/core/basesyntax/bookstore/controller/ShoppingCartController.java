@@ -1,9 +1,9 @@
 package core.basesyntax.bookstore.controller;
 
-import core.basesyntax.bookstore.dto.cart.ShoppingCartDto;
-import core.basesyntax.bookstore.dto.item.CartItemDto;
-import core.basesyntax.bookstore.dto.item.CreateCartItemDto;
-import core.basesyntax.bookstore.dto.item.UpdateCartItemDto;
+import core.basesyntax.bookstore.dto.cartitem.CartItemDto;
+import core.basesyntax.bookstore.dto.cartitem.CreateCartItemDto;
+import core.basesyntax.bookstore.dto.cartitem.UpdateCartItemDto;
+import core.basesyntax.bookstore.dto.shoppingcart.ShoppingCartDto;
 import core.basesyntax.bookstore.service.CartItemService;
 import core.basesyntax.bookstore.service.ShoppingCartService;
 import io.swagger.v3.oas.annotations.Operation;
