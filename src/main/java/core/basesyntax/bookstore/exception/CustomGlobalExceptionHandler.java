@@ -1,9 +1,8 @@
 package core.basesyntax.bookstore.exception;
 
+import core.basesyntax.bookstore.dto.ErrorResponse;
 import java.time.LocalDateTime;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -19,9 +18,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
-    private static final String TIMESTAMP = "timestamp";
-    private static final String STATUS = "status";
-    private static final String ERRORS = "errors";
     private static final String SPACE = " ";
 
     @Override
@@ -31,14 +27,12 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
             HttpStatusCode status,
             WebRequest request
     ) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put(TIMESTAMP, LocalDateTime.now());
-        body.put(STATUS, HttpStatus.BAD_REQUEST);
         List<String> errors = ex.getBindingResult().getAllErrors().stream()
                 .map(this::getErrorMessage)
                 .toList();
-        body.put(ERRORS, errors);
-        return new ResponseEntity<>(body, headers, status);
+        ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST, errors);
+        return new ResponseEntity<>(errorResponse, headers, status);
     }
 
     @ExceptionHandler(RegistrationException.class)
@@ -46,11 +40,9 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
             RegistrationException ex,
             WebRequest request
     ) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put(TIMESTAMP, LocalDateTime.now());
-        body.put(STATUS, HttpStatus.INTERNAL_SERVER_ERROR);
-        body.put(ERRORS, List.of(ex.getMessage()));
-        return handleExceptionInternal(ex, body, new HttpHeaders(),
+        ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(),
+                HttpStatus.INTERNAL_SERVER_ERROR, List.of(ex.getMessage()));
+        return handleExceptionInternal(ex, errorResponse, new HttpHeaders(),
                 HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
@@ -59,11 +51,9 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
             AccessDeniedException ex,
             WebRequest request
     ) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put(TIMESTAMP, LocalDateTime.now());
-        body.put(STATUS, HttpStatus.FORBIDDEN);
-        body.put(ERRORS, List.of("Access denied"));
-        return new ResponseEntity<>(body, new HttpHeaders(), HttpStatus.FORBIDDEN);
+        ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(),
+                HttpStatus.FORBIDDEN, List.of("Access denied"));
+        return new ResponseEntity<>(errorResponse, new HttpHeaders(), HttpStatus.FORBIDDEN);
     }
 
     private String getErrorMessage(ObjectError e) {
