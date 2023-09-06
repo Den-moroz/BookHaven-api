@@ -18,12 +18,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler {
-<<<<<<< HEAD
-=======
-    private static final String TIMESTAMP = "timestamp";
-    private static final String STATUS = "status";
-    private static final String ERRORS = "errors";
->>>>>>> add-docker
     private static final String SPACE = " ";
 
     @Override
@@ -60,31 +54,6 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(),
                 HttpStatus.FORBIDDEN, List.of("Access denied"));
         return new ResponseEntity<>(errorResponse, new HttpHeaders(), HttpStatus.FORBIDDEN);
-    }
-
-    @ExceptionHandler(RegistrationException.class)
-    protected ResponseEntity<Object> handleRegistrationException(
-            RegistrationException ex,
-            WebRequest request
-    ) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put(TIMESTAMP, LocalDateTime.now());
-        body.put(STATUS, HttpStatus.INTERNAL_SERVER_ERROR);
-        body.put(ERRORS, List.of(ex.getMessage()));
-        return handleExceptionInternal(ex, body, new HttpHeaders(),
-                HttpStatus.INTERNAL_SERVER_ERROR, request);
-    }
-
-    @ExceptionHandler(AccessDeniedException.class)
-    protected ResponseEntity<Object> handleAccessDeniedException(
-            AccessDeniedException ex,
-            WebRequest request
-    ) {
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put(TIMESTAMP, LocalDateTime.now());
-        body.put(STATUS, HttpStatus.FORBIDDEN);
-        body.put(ERRORS, List.of("Access denied"));
-        return new ResponseEntity<>(body, new HttpHeaders(), HttpStatus.FORBIDDEN);
     }
 
     private String getErrorMessage(ObjectError e) {

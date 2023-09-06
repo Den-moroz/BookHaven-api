@@ -27,11 +27,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserRegistrationResponseDto register(UserRegistrationRequestDto request)
             throws RegistrationException {
-<<<<<<< HEAD
+
         if (userRepository.findByEmailFetchRoles(request.getEmail()).isPresent()) {
-=======
-        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
->>>>>>> add-docker
             throw new RegistrationException("Unable to complete registration");
         }
         User user = new User();

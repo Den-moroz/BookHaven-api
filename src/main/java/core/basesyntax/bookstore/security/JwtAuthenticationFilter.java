@@ -30,12 +30,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
-<<<<<<< HEAD
         String token = getAuthToken(request);
-=======
-        String token = getToken(request);
-
->>>>>>> add-docker
         if (token != null && jwtUtil.isTokenValid(token)) {
             String username = jwtUtil.getUsername(token);
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -47,11 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-<<<<<<< HEAD
     private String getAuthToken(HttpServletRequest request) {
-=======
-    private String getToken(HttpServletRequest request) {
->>>>>>> add-docker
         String bearerToken = request.getHeader(HEADER);
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(FIRST_PART_OF_TOKEN)) {
             return bearerToken.substring(START_OF_TOKEN);

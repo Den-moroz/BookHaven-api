@@ -14,14 +14,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-<<<<<<< HEAD
         return userRepository.findByEmailFetchRoles(username).orElseThrow(() ->
                 new UsernameNotFoundException("User not found with email: " + username));
     }
-=======
-        return userRepository.findByEmail(username).orElseThrow(() ->
-                new UsernameNotFoundException("User not found with email: " + username));
-    }
-
->>>>>>> add-docker
 }
