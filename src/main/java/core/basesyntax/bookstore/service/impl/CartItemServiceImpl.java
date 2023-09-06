@@ -12,6 +12,8 @@ import core.basesyntax.bookstore.repository.cart.ShoppingCartRepository;
 import core.basesyntax.bookstore.repository.item.CartItemRepository;
 import core.basesyntax.bookstore.service.CartItemService;
 import core.basesyntax.bookstore.service.UserService;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +41,13 @@ public class CartItemServiceImpl implements CartItemService {
                 .orElseThrow(
                         () -> new EntityNotFoundException("Can't find shopping cart by id: " + id));
         cartItem.setShoppingCart(shoppingCart);
+        List<CartItem> cartItems = new ArrayList<>();
+        cartItems.add(cartItem);
+        if (shoppingCart.getCartItems().isEmpty()) {
+            shoppingCart.setCartItems(cartItems);
+        } else {
+            shoppingCart.getCartItems().add(cartItem);
+        }
         return cartItemMapper.toDto(cartItemRepository.save(cartItem));
     }
 

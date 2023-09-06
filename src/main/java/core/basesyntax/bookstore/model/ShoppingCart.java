@@ -9,8 +9,10 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
-import java.util.Set;
+import java.util.List;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -31,7 +33,9 @@ public class ShoppingCart {
             joinColumns = @JoinColumn(name = "shopping_cart_id"),
             inverseJoinColumns = @JoinColumn(name = "cart_item_id")
     )
-    private Set<CartItem> cartItems;
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    private List<CartItem> cartItems;
     @Column(name = "is_deleted")
     private boolean isDeleted = false;
 }
