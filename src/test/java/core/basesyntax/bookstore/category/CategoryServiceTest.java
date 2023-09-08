@@ -1,5 +1,6 @@
 package core.basesyntax.bookstore.category;
 
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -11,7 +12,7 @@ import core.basesyntax.bookstore.exception.EntityNotFoundException;
 import core.basesyntax.bookstore.mapper.CategoryMapper;
 import core.basesyntax.bookstore.model.Category;
 import core.basesyntax.bookstore.repository.category.CategoryRepository;
-import core.basesyntax.bookstore.service.CategoryService;
+import core.basesyntax.bookstore.service.impl.CategoryServiceImpl;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +26,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,11 +37,9 @@ public class CategoryServiceTest {
     private static final CategoryDto VALID_RESPONSE = new CategoryDto();
 
     @InjectMocks
-    private CategoryService categoryService;
-
+    private CategoryServiceImpl categoryService;
     @Mock
     private CategoryRepository categoryRepository;
-
     @Mock
     private CategoryMapper categoryMapper;
 
@@ -72,12 +73,15 @@ public class CategoryServiceTest {
     @Test
     @DisplayName("Verify findAll() method works")
     void findAll_includedPagination_returnListCategoryDto() {
-        List<Category> categories = Collections.singletonList(VALID_CATEGORY);
-        when(categoryRepository.findAll(Mockito.any(Pageable.class))).thenReturn((Page<Category>) categories);
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Category> categoryPage =
+                new PageImpl<>(Collections.singletonList(VALID_CATEGORY), pageable, 1);
+        when(categoryRepository.findAll(pageable))
+                .thenReturn(categoryPage);
         when(categoryMapper.toDto(VALID_CATEGORY)).thenReturn(VALID_RESPONSE);
 
-        List<CategoryDto> actual = categoryService.findAll(Mockito.any(Pageable.class));
-        verify(categoryRepository).findAll(Mockito.any(Pageable.class));
+        List<CategoryDto> actual = categoryService.findAll(pageable);
+        verify(categoryRepository).findAll(pageable);
         verify(categoryMapper).toDto(VALID_CATEGORY);
         Assertions.assertEquals(Collections.singletonList(VALID_RESPONSE), actual);
     }
@@ -116,19 +120,22 @@ public class CategoryServiceTest {
         when(categoryMapper.toDto(VALID_CATEGORY)).thenReturn(VALID_RESPONSE);
 
         CategoryDto actual = categoryService.update(1L, REQUEST_DTO);
+        Assertions.assertEquals(VALID_RESPONSE, actual);
         verify(categoryRepository).findById(1L);
         verify(categoryMapper).toModel(REQUEST_DTO);
         verify(categoryRepository).save(VALID_CATEGORY);
         verify(categoryMapper).toDto(VALID_CATEGORY);
-        Assertions.assertEquals(VALID_RESPONSE, actual);
     }
 
     @Test
     @DisplayName("Test deleteById with valid category ID")
     void deleteById_validCategoryId_successfullyDeleted() {
         Long validCategoryId = 1L;
+        when(categoryRepository.findById(validCategoryId)).thenReturn(Optional.of(VALID_CATEGORY));
+        doNothing().when(categoryRepository).delete(VALID_CATEGORY);
 
         Assertions.assertDoesNotThrow(() -> categoryService.deleteById(validCategoryId));
-        verify(categoryRepository).deleteById(validCategoryId);
+        verify(categoryRepository).delete(VALID_CATEGORY);
+        verify(categoryRepository).findById(validCategoryId);
     }
 }

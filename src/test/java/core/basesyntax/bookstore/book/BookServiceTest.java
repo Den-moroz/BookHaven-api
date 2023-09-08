@@ -14,7 +14,7 @@ import core.basesyntax.bookstore.model.Book;
 import core.basesyntax.bookstore.model.Category;
 import core.basesyntax.bookstore.repository.book.BookRepository;
 import core.basesyntax.bookstore.repository.book.BookSpecificationBuilder;
-import core.basesyntax.bookstore.service.BookService;
+import core.basesyntax.bookstore.service.impl.BookServiceImpl;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +30,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -46,7 +47,7 @@ public class BookServiceTest {
             50
     );
     @InjectMocks
-    private BookService bookService;
+    private BookServiceImpl bookService;
     @Mock
     private BookRepository bookRepository;
     @Mock
@@ -83,80 +84,77 @@ public class BookServiceTest {
         VALID_RESPONSE.setIsbn(VALID_BOOK.getIsbn());
         VALID_RESPONSE.setDescription(VALID_BOOK.getDescription());
         VALID_RESPONSE.setCoverImage(VALID_BOOK.getCoverImage());
-        Set<Long> categoriesId = VALID_BOOK.getCategories().stream().map(Category::getId).collect(Collectors.toSet());
+        Set<Long> categoriesId = VALID_BOOK.getCategories().stream()
+                .map(Category::getId)
+                .collect(Collectors.toSet());
         VALID_RESPONSE.setCategories(categoriesId);
     }
 
     @Test
     @DisplayName("Verify save() method works")
     void save_validCreateBookRequestDto_returnBookDto() {
-        bookService.save(REQUEST_DTO);
-
         when(bookMapper.toModel(REQUEST_DTO)).thenReturn(VALID_BOOK);
         when(bookRepository.save(VALID_BOOK)).thenReturn(VALID_BOOK);
         when(bookMapper.toDto(VALID_BOOK)).thenReturn(VALID_RESPONSE);
 
         BookDto savedBookDto = bookService.save(REQUEST_DTO);
-
         Assertions.assertEquals(VALID_RESPONSE, savedBookDto);
-        verify(bookRepository, times(1)).findAll();
+        verify(bookRepository, times(1)).save(VALID_BOOK);
         verifyNoMoreInteractions(bookRepository, bookMapper);
     }
 
     @Test
     @DisplayName("Verify findAll() method works")
     void findAll_includedPagination_returnListBookDto() {
-        when(bookRepository.findAllWithCategories(Mockito.any(Pageable.class)))
+        Pageable pageable = PageRequest.of(0, 10);
+        when(bookRepository.findAllWithCategories(pageable))
                 .thenReturn(Collections.singletonList(VALID_BOOK));
         when(bookMapper.toDto(VALID_BOOK)).thenReturn(VALID_RESPONSE);
 
-        List<BookDto> actual = bookService.findAll(Mockito.any(Pageable.class));
-        Mockito.verify(bookRepository).findAllWithCategories(Mockito.any(Pageable.class));
-        Mockito.verify(bookMapper).toDto(VALID_BOOK);
+        List<BookDto> actual = bookService.findAll(pageable);
+        verify(bookRepository).findAllWithCategories(pageable);
+        verify(bookMapper).toDto(VALID_BOOK);
         Assertions.assertEquals(Collections.singletonList(VALID_RESPONSE), actual);
-
     }
 
     @Test
     @DisplayName("Test getBookById with existing book")
     void findById_validId_returnBook() {
-        when(bookRepository.findByIdWithCategories(Mockito.anyLong()))
+        when(bookRepository.findById(Mockito.anyLong()))
                 .thenReturn(Optional.of(VALID_BOOK));
         when(bookMapper.toDto(VALID_BOOK)).thenReturn(VALID_RESPONSE);
 
         BookDto actual = bookService.getBookById(1L);
-        Mockito.verify(bookRepository).findByIdWithCategories(1L);
-        Mockito.verify(bookMapper).toDto(VALID_BOOK);
+        verify(bookRepository).findById(1L);
+        verify(bookMapper).toDto(VALID_BOOK);
         Assertions.assertEquals(VALID_RESPONSE, actual);
     }
 
     @Test
     @DisplayName("Test getBookById with non-existing book")
     void findById_invalidId_throwException() {
-        when(bookRepository.findByIdWithCategories(Mockito.anyLong()))
+        when(bookRepository.findById(Mockito.anyLong()))
                 .thenReturn(Optional.empty());
 
         EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class,
                 () -> bookService.getBookById(100L));
-        Mockito.verify(bookRepository).findByIdWithCategories(100L);
+        verify(bookRepository).findById(100L);
         Assertions.assertEquals("Book not found with id: 100", exception.getMessage());
     }
 
     @Test
     @DisplayName("Test updateById with existing book")
     void updateById_validRequest_returnResponse() {
-        when(bookRepository.findById(Mockito.anyLong()))
-                .thenReturn(Optional.of(VALID_BOOK));
         when(bookMapper.toModel(REQUEST_DTO)).thenReturn(VALID_BOOK);
         when(bookRepository.save(VALID_BOOK)).thenReturn(VALID_BOOK);
+        when(bookRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(VALID_BOOK));
         when(bookMapper.toDto(VALID_BOOK)).thenReturn(VALID_RESPONSE);
 
         BookDto actual = bookService.updateById(1L, REQUEST_DTO);
-        Mockito.verify(bookRepository).findById(1L);
-        Mockito.verify(bookMapper).toModel(REQUEST_DTO);
-        Mockito.verify(bookRepository).save(VALID_BOOK);
-        Mockito.verify(bookMapper).toDto(VALID_BOOK);
         Assertions.assertEquals(VALID_RESPONSE, actual);
+        verify(bookMapper).toModel(REQUEST_DTO);
+        verify(bookRepository).save(VALID_BOOK);
+        verify(bookMapper).toDto(VALID_BOOK);
     }
 
     @Test
@@ -164,20 +162,20 @@ public class BookServiceTest {
     void findByParams_validParameters_returnBook() {
         Specification<Book> bookSpecification = Mockito.mock(Specification.class);
         when(bookSpecificationBuilder.build(REQUEST_PARAMS)).thenReturn(bookSpecification);
-        when(bookRepository.findAllWithCategories(bookSpecification))
+        when(bookRepository.findAll(bookSpecification))
                 .thenReturn(Collections.singletonList(VALID_BOOK));
         when(bookMapper.toDto(VALID_BOOK)).thenReturn(VALID_RESPONSE);
 
         List<BookDto> result = bookService.findByParams(REQUEST_PARAMS);
-        Mockito.verify(bookSpecificationBuilder).build(REQUEST_PARAMS);
-        Mockito.verify(bookRepository).findAllWithCategories(bookSpecification);
-        Mockito.verify(bookMapper).toDto(VALID_BOOK);
         Assertions.assertEquals(Collections.singletonList(VALID_RESPONSE), result);
+        verify(bookSpecificationBuilder).build(REQUEST_PARAMS);
+        verify(bookRepository).findAll(bookSpecification);
+        verify(bookMapper).toDto(VALID_BOOK);
     }
 
     @Test
     @DisplayName("Test deleteById with valid book ID")
-    void DeleteById_validBookId_successfullyDeleted() {
+    void deleteById_validBookId_successfullyDeleted() {
         Long validBookId = 1L;
         Assertions.assertDoesNotThrow(() -> bookService.deleteById(validBookId));
         verify(bookRepository).deleteById(validBookId);

@@ -35,15 +35,25 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(errorResponse, headers, status);
     }
 
+    @ExceptionHandler(EntityNotFoundException.class)
+    protected ResponseEntity<Object> handleEntityNotFoundException(
+            EntityNotFoundException ex,
+            WebRequest request
+    ) {
+        ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(),
+                HttpStatus.NOT_FOUND, List.of(ex.getMessage()));
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(RegistrationException.class)
     protected ResponseEntity<Object> handleRegistrationException(
             RegistrationException ex,
             WebRequest request
     ) {
         ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(),
-                HttpStatus.INTERNAL_SERVER_ERROR, List.of(ex.getMessage()));
+                HttpStatus.BAD_REQUEST, List.of(ex.getMessage()));
         return handleExceptionInternal(ex, errorResponse, new HttpHeaders(),
-                HttpStatus.INTERNAL_SERVER_ERROR, request);
+                HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
