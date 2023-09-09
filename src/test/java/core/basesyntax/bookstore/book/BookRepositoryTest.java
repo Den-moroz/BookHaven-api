@@ -57,7 +57,7 @@ class BookRepositoryTest {
             connection.setAutoCommit(true);
             ScriptUtils.executeSqlScript(
                     connection,
-                    new ClassPathResource("database/book/delete-all-book.sql")
+                    new ClassPathResource("database/delete-all-from-db.sql")
             );
         }
     }
@@ -135,7 +135,7 @@ class BookRepositoryTest {
             """)
     void findByIdWithCategories_validTwoBook_returnBook() {
         List<Book> savedBooks = savedBooks();
-        Optional<Book> actual = bookRepository.findById(savedBooks.get(0).getId());
+        Optional<Book> actual = bookRepository.findByIdWithCategories(savedBooks.get(0).getId());
         Assertions.assertEquals(VALID_BOOK_1.getTitle(), actual.get().getTitle());
     }
 

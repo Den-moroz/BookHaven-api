@@ -1,8 +1,10 @@
 package core.basesyntax.bookstore.exception;
 
 import core.basesyntax.bookstore.dto.ErrorResponse;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDateTime;
 import java.util.List;
+import lombok.NonNull;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -23,9 +25,9 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex,
-            HttpHeaders headers,
-            HttpStatusCode status,
-            WebRequest request
+            @NonNull HttpHeaders headers,
+            @NonNull HttpStatusCode status,
+            @NonNull WebRequest request
     ) {
         List<String> errors = ex.getBindingResult().getAllErrors().stream()
                 .map(this::getErrorMessage)
@@ -35,10 +37,18 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(errorResponse, headers, status);
     }
 
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public ResponseEntity<Object> handleSqlIntegrityConstraintViolationException(
+            SQLIntegrityConstraintViolationException ex
+    ) {
+        ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND,
+                List.of(ex.getMessage()));
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(EntityNotFoundException.class)
-    protected ResponseEntity<Object> handleEntityNotFoundException(
-            EntityNotFoundException ex,
-            WebRequest request
+    public ResponseEntity<Object> handleEntityNotFoundException(
+            EntityNotFoundException ex
     ) {
         ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(),
                 HttpStatus.NOT_FOUND, List.of(ex.getMessage()));
@@ -46,20 +56,17 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     }
 
     @ExceptionHandler(RegistrationException.class)
-    protected ResponseEntity<Object> handleRegistrationException(
-            RegistrationException ex,
-            WebRequest request
+    public ResponseEntity<Object> handleRegistrationException(
+            RegistrationException ex
     ) {
         ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST, List.of(ex.getMessage()));
-        return handleExceptionInternal(ex, errorResponse, new HttpHeaders(),
-                HttpStatus.BAD_REQUEST, request);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    protected ResponseEntity<Object> handleAccessDeniedException(
-            AccessDeniedException ex,
-            WebRequest request
+    public ResponseEntity<Object> handleAccessDeniedException(
+            AccessDeniedException ex
     ) {
         ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(),
                 HttpStatus.FORBIDDEN, List.of("Access denied"));

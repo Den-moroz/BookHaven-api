@@ -65,7 +65,7 @@ class BookControllerTest {
             connection.setAutoCommit(true);
             ScriptUtils.executeSqlScript(
                     connection,
-                    new ClassPathResource("database/book/add-default-book-and-categories.sql")
+                    new ClassPathResource("database/book/add-default-books-and-categories.sql")
             );
         }
     }
@@ -83,7 +83,7 @@ class BookControllerTest {
             connection.setAutoCommit(true);
             ScriptUtils.executeSqlScript(
                     connection,
-                    new ClassPathResource("database/book/delete-all-book.sql")
+                    new ClassPathResource("database/delete-all-from-db.sql")
             );
         }
     }
@@ -124,8 +124,8 @@ class BookControllerTest {
 
         VALID_BOOK_DTO_4.setTitle("Book 3 Title");
         VALID_BOOK_DTO_4.setAuthor("Author 3");
-        VALID_BOOK_DTO_4.setPrice(BigDecimal.valueOf(28));
-        VALID_BOOK_DTO_4.setIsbn("978-0-316-03647-4");
+        VALID_BOOK_DTO_4.setPrice(BigDecimal.valueOf(20));
+        VALID_BOOK_DTO_4.setIsbn("978-0307743657");
         VALID_BOOK_DTO_4.setDescription("Description 3 for book 3");
         VALID_BOOK_DTO_4.setCoverImage("http://example.com/book3.jpg");;
         VALID_BOOK_DTO_4.setCategories(Set.of(2L));
@@ -177,9 +177,9 @@ class BookControllerTest {
     }
 
     @Test
-    @DisplayName("Test getAll endpoint")
+    @DisplayName("Test getAll endpoint for book")
     @WithMockUser(username = "admin")
-    void getAll_returnResponse() throws Exception {
+    void getAll_validFourBook_returnResponse() throws Exception {
         mockMvc.perform(
                         get("/books")
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -194,10 +194,11 @@ class BookControllerTest {
                     Assertions.assertNotNull(actualList);
                     Assertions.assertEquals(3, actualList.size());
                     boolean expression3 = EqualsBuilder.reflectionEquals(
-                            VALID_BOOK_DTO_4,
+                            VALID_UPDATE_DTO,
                             actualList.get(2),
                             "id"
                     );
+                    System.out.println(actualList.get(2));
                     Assertions.assertTrue(expression3);
                 });
     }
@@ -207,7 +208,7 @@ class BookControllerTest {
     @WithMockUser(username = "admin")
     void getBookById_validId_returnResponse() throws Exception {
         mockMvc.perform(
-                        get("/books/2")
+                        get("/books/1")
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -219,12 +220,23 @@ class BookControllerTest {
                     );
                     Assertions.assertNotNull(actual);
                     boolean expression = EqualsBuilder.reflectionEquals(
-                            VALID_BOOK_DTO_3,
+                            VALID_BOOK_DTO_2,
                             actual,
                             "id"
                     );
                     Assertions.assertTrue(expression);
                 });
+    }
+
+    @Test
+    @DisplayName("Test getBookById endpoint with invalid ID")
+    @WithMockUser(username = "admin")
+    void getBookById_invalidId_returnNotFound() throws Exception {
+        mockMvc.perform(
+                        get("/books/-1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
     @Test
@@ -292,6 +304,18 @@ class BookControllerTest {
     }
 
     @Test
+    @DisplayName("Test updateById endpoint with invalid ID")
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    void updateById_invalidId_returnNotFound() throws Exception {
+        mockMvc.perform(
+                        MockMvcRequestBuilders.put("/books/-1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(VALID_UPDATE_REQUEST_DTO))
+                )
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
+    }
+
+    @Test
     @DisplayName("Test delete endpoint with valid ID")
     @WithMockUser(username = "admin", roles = {"ADMIN"})
     void delete_validId_returnNoContent() throws Exception {
@@ -300,5 +324,16 @@ class BookControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(MockMvcResultMatchers.status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("Test delete endpoint with invalid ID")
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    void delete_invalidId_returnNotFound() throws Exception {
+        mockMvc.perform(
+                        delete("/books/-1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 }
