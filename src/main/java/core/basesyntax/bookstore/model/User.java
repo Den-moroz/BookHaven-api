@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -22,8 +23,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @Data
 @Entity
-@SQLDelete(sql = "UPDATE book SET is_deleted = true WHERE id=?")
-@Where(clause = "is_deleted=false")
+@SQLDelete(sql = "UPDATE book SET is_deleted = true WHERE id = ?")
+@Where(clause = "is_deleted = false")
 @Table(name = "user")
 public class User implements UserDetails {
     @Id
@@ -45,6 +46,7 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
+    @EqualsAndHashCode.Exclude
     @ToString.Exclude
     private Set<Role> roles = new HashSet<>();
     @Column(name = "is_deleted", nullable = false)
