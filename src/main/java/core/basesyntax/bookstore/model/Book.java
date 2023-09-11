@@ -14,14 +14,15 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 @Data
 @Entity
-@SQLDelete(sql = "UPDATE book SET is_deleted = true WHERE id=?")
-@Where(clause = "is_deleted=false")
+@SQLDelete(sql = "UPDATE book SET is_deleted = true WHERE id = ?")
+@Where(clause = "is_deleted = false")
 @Table(name = "book")
 public class Book {
     @Id
@@ -43,6 +44,7 @@ public class Book {
             inverseJoinColumns = @JoinColumn(name = "category_id")
     )
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Set<Category> categories = new HashSet<>();
     @Column(nullable = false)
     private boolean isDeleted = false;

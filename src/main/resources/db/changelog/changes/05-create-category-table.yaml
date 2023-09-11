@@ -26,6 +26,3 @@ databaseChangeLog:
                   defaultValueBoolean: false
                   constraints:
                     nullable: false
-        - addUniqueConstraint:
-            tableName: category
-            columnNames: name

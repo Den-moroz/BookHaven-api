@@ -15,7 +15,6 @@ public class CreateBookRequestDto {
     @Length(min = 1, max = 255)
     private String title;
     @NotNull
-    @Length(min = 1, max = 255)
     private String author;
     @NotNull
     @ISBN
