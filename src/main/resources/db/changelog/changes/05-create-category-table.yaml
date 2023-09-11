@@ -29,3 +29,4 @@ databaseChangeLog:
         - addUniqueConstraint:
             tableName: category
             columnNames: name
+            
