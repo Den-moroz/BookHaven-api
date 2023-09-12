@@ -1,11 +1,11 @@
 delete from book_category;
 delete from category;
-delete from book;
 delete from user_role;
-delete from user;
 delete from role;
 delete from shopping_cart_cart_item;
-delete from shopping_cart;
 delete from cart_item;
-delete from order;
+delete from shopping_cart;
 delete from order_item;
+delete from orders;
+delete from user;
+delete from book;
