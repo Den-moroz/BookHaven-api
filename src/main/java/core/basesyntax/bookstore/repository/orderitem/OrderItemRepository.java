@@ -2,6 +2,7 @@ package core.basesyntax.bookstore.repository.orderitem;
 
 import core.basesyntax.bookstore.model.OrderItem;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -10,5 +11,5 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
     List<OrderItem> findAllByOrderId(Long orderId);
 
     @Query("SELECT oi FROM OrderItem oi WHERE oi.id = :itemId AND oi.order.id = :orderId")
-    OrderItem findAllByIdAndOrderId(Long itemId, Long orderId);
+    Optional<OrderItem> findAllByIdAndOrderId(Long itemId, Long orderId);
 }

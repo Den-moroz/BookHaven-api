@@ -110,7 +110,8 @@ public class OrderItemRepositoryTest {
     @Sql(scripts = "classpath:database/orderitem/setup-order-item-repository.sql",
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void findAllByIdAndOrderId_validIdAndOrderId_returnOrderItem() {
-        OrderItem actual = orderItemRepository.findAllByIdAndOrderId(VALID_ITEM_ID, VALID_ORDER_ID);
+        OrderItem actual = orderItemRepository.findAllByIdAndOrderId(VALID_ITEM_ID,
+                VALID_ORDER_ID).get();
         Assertions.assertNotNull(actual);
         Assertions.assertEquals(VALID_ORDER_ITEM_1.getOrder(), actual.getOrder());
     }

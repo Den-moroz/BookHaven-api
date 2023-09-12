@@ -13,6 +13,7 @@ import core.basesyntax.bookstore.service.impl.OrderItemServiceImpl;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -91,7 +92,7 @@ public class OrderItemServiceTest {
     @DisplayName("Verify getByItemIdAndOrderId() method")
     void getByItemIdAndOrderId_validItemIdAndOrderId_returnOneItem() {
         when(orderItemRepository.findAllByIdAndOrderId(Mockito.anyLong(), Mockito.anyLong()))
-                .thenReturn(VALID_ORDER_ITEM);
+                .thenReturn(Optional.of(VALID_ORDER_ITEM));
         when(orderItemMapper.toDto(Mockito.any())).thenReturn(VALID_ORDER_ITEM_DTO);
 
         OrderItemDto actual = orderItemService.getByItemIdAndOrderId(VALID_ITEM_ID, VALID_ORDER_ID);

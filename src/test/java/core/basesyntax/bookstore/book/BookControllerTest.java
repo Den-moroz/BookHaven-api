@@ -166,7 +166,7 @@ class BookControllerTest {
                             BookDto.class
                     );
                     Assertions.assertNotNull(actual);
-                    boolean expression = org.apache.commons.lang3.builder.EqualsBuilder
+                    boolean expression = EqualsBuilder
                             .reflectionEquals(
                                     VALID_BOOK_DTO_1,
                                     actual,
@@ -198,7 +198,6 @@ class BookControllerTest {
                             actualList.get(2),
                             "id"
                     );
-                    System.out.println(actualList.get(2));
                     Assertions.assertTrue(expression3);
                 });
     }
