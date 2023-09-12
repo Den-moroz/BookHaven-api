@@ -6,20 +6,19 @@ import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificationExecutor<Book> {
+public interface BookRepository extends JpaRepository<Book, Long> {
     @Query("SELECT b FROM Book b INNER JOIN FETCH b.categories c WHERE c.id = :categoryId")
-    List<Book> findAllByCategoriesId(@Param("categoryId") Long categoryId);
+    List<Book> findAllByCategoriesIdWithCategories(@Param("categoryId") Long categoryId);
 
     @Query("SELECT DISTINCT b FROM Book b INNER JOIN FETCH b.categories")
     List<Book> findAllWithCategories(Pageable pageable);
 
-    @Query("SELECT b FROM Book b INNER JOIN FETCH b.categories WHERE b.id = :id")
-    Optional<Book> findById(@Param("id") Long id);
-
     @Query("SELECT b FROM Book b INNER JOIN FETCH b.categories")
-    List<Book> findAll(Specification<Book> bookSpecification);
+    List<Book> findAllWithCategories(Specification<Book> bookSpecification);
+
+    @Query("SELECT b FROM Book b INNER JOIN FETCH b.categories WHERE b.id = :id")
+    Optional<Book> findByIdWithCategories(@Param("id") Long id);
 }
