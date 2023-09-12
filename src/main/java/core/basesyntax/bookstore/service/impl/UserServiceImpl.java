@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserRegistrationResponseDto register(UserRegistrationRequestDto request)
             throws RegistrationException {
-
         if (userRepository.findByEmailFetchRoles(request.getEmail()).isPresent()) {
             throw new RegistrationException("Unable to complete registration");
         }
