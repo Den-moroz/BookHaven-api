@@ -78,7 +78,7 @@ public class CategoryController {
         categoryRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Category not found"));
 
-        return bookRepository.findAllByCategoriesId(id).stream()
+        return bookRepository.findAllByCategoriesIdWithCategories(id).stream()
                 .map(bookMapper::toDtoWithoutCategories)
                 .toList();
     }

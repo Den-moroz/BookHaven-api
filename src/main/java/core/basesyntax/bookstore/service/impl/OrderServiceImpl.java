@@ -37,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderDto save(CreateOrderRequestDto requestDto) {
-        User user = userService.getUser();
+        User user = userService.getAuthenticatedUser();
         List<CartItem> cartItems = getCartItems(user);
         BigDecimal totalPrice = calculateTotalPrice(cartItems);
         Order order = new Order();
