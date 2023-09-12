@@ -1,4 +1,4 @@
-package core.basesyntax.bookstore.dto;
+package core.basesyntax.bookstore.dto.user;
 
 import core.basesyntax.bookstore.validation.FieldMatch;
 import jakarta.validation.constraints.Email;

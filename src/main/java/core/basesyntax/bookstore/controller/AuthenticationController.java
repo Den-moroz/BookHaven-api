@@ -1,9 +1,9 @@
 package core.basesyntax.bookstore.controller;
 
-import core.basesyntax.bookstore.dto.UserLoginRequestDto;
-import core.basesyntax.bookstore.dto.UserLoginResponseDto;
-import core.basesyntax.bookstore.dto.UserRegistrationRequestDto;
-import core.basesyntax.bookstore.dto.UserRegistrationResponseDto;
+import core.basesyntax.bookstore.dto.user.UserLoginRequestDto;
+import core.basesyntax.bookstore.dto.user.UserLoginResponseDto;
+import core.basesyntax.bookstore.dto.user.UserRegistrationRequestDto;
+import core.basesyntax.bookstore.dto.user.UserRegistrationResponseDto;
 import core.basesyntax.bookstore.exception.RegistrationException;
 import core.basesyntax.bookstore.security.AuthenticationService;
 import core.basesyntax.bookstore.service.UserService;
