@@ -1,8 +1,8 @@
 package core.basesyntax.bookstore.controller;
 
-import core.basesyntax.bookstore.dto.BookDto;
-import core.basesyntax.bookstore.dto.BookSearchParametersDto;
-import core.basesyntax.bookstore.dto.CreateBookRequestDto;
+import core.basesyntax.bookstore.dto.book.BookDto;
+import core.basesyntax.bookstore.dto.book.BookSearchParametersDto;
+import core.basesyntax.bookstore.dto.book.CreateBookRequestDto;
 import core.basesyntax.bookstore.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

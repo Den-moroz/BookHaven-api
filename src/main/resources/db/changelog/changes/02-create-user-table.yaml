@@ -43,21 +43,3 @@ databaseChangeLog:
                   defaultValueBoolean: false
                   constraints:
                     nullable: false
-
-  - changeSet:
-      id: create-user-role-table
-      author: denis
-      changes:
-        - createTable:
-            tableName: user_role
-            columns:
-              - column:
-                  name: user_id
-                  type: bigint
-                  constraints:
-                    nullable: false
-              - column:
-                  name: role_id
-                  type: bigint
-                  constraints:
-                    nullable: false
