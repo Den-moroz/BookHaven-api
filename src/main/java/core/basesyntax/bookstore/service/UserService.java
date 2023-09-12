@@ -9,5 +9,5 @@ public interface UserService {
     UserRegistrationResponseDto register(UserRegistrationRequestDto request)
             throws RegistrationException;
 
-    User getUser();
+    User getAuthenticatedUser();
 }
