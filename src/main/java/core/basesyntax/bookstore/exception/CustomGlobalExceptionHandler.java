@@ -43,7 +43,7 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
     ) {
         ErrorResponse errorResponse = new ErrorResponse(LocalDateTime.now(), HttpStatus.NOT_FOUND,
                 List.of(ex.getMessage()));
-        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
