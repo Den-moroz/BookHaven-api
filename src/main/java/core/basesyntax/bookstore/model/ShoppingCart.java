@@ -9,6 +9,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,8 +19,8 @@ import org.hibernate.annotations.Where;
 
 @Data
 @Entity
-@SQLDelete(sql = "UPDATE book SET is_deleted = true WHERE id=?")
-@Where(clause = "is_deleted=false")
+@SQLDelete(sql = "UPDATE book SET is_deleted = true WHERE id = ?")
+@Where(clause = "is_deleted = false")
 @Table(name = "shopping_cart")
 public class ShoppingCart {
     @Id
@@ -35,7 +36,7 @@ public class ShoppingCart {
     )
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private List<CartItem> cartItems;
+    private List<CartItem> cartItems = new ArrayList<>();
     @Column(name = "is_deleted")
     private boolean isDeleted = false;
 }
