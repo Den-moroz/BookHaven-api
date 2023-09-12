@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUser() {
+    public User getAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return userRepository.findByEmailFetchRoles(authentication.getName()).orElseThrow(
                 () -> new UsernameNotFoundException("Can't find a user with email "
