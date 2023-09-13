@@ -1,5 +1,9 @@
 package core.basesyntax.bookstore.cartitem;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import core.basesyntax.bookstore.model.Book;
 import core.basesyntax.bookstore.model.CartItem;
 import core.basesyntax.bookstore.model.ShoppingCart;
@@ -12,7 +16,6 @@ import java.util.Set;
 import javax.sql.DataSource;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,6 +33,7 @@ public class CartItemRepositoryTest {
     private static final User DEFAULT_USER = new User();
     private static final ShoppingCart VALID_SHOPPING_CART = new ShoppingCart();
     private static final CartItem VALID_CART_ITEM = new CartItem();
+    private static final Long INVALID_ID = -1L;
 
     @Autowired
     private CartItemRepository cartItemRepository;
@@ -82,7 +86,15 @@ public class CartItemRepositoryTest {
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void findCartItemsByShoppingCartId_validShoppingCartId_returnOneItem() {
         Set<CartItem> actual = cartItemRepository.findCartItemsByShoppingCartId(1L);
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(Set.of(VALID_CART_ITEM), actual);
+        assertNotNull(actual);
+        assertEquals(Set.of(VALID_CART_ITEM), actual);
+    }
+
+    @Test
+    @DisplayName("Find cart items by non-existent shopping cart id")
+    void findCartItemsByShoppingCartId_nonExistentShoppingCartId_returnEmptySet() {
+        Set<CartItem> actual = cartItemRepository.findCartItemsByShoppingCartId(INVALID_ID);
+        assertNotNull(actual);
+        assertTrue(actual.isEmpty());
     }
 }

@@ -1,8 +1,15 @@
 package core.basesyntax.bookstore.orderitem;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 import core.basesyntax.bookstore.dto.orderitem.OrderItemDto;
+import core.basesyntax.bookstore.exception.EntityNotFoundException;
 import core.basesyntax.bookstore.mapper.OrderItemMapper;
 import core.basesyntax.bookstore.model.Book;
 import core.basesyntax.bookstore.model.Order;
@@ -12,17 +19,16 @@ import core.basesyntax.bookstore.repository.orderitem.OrderItemRepository;
 import core.basesyntax.bookstore.service.impl.OrderItemServiceImpl;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -79,24 +85,46 @@ public class OrderItemServiceTest {
     @Test
     @DisplayName("Verify getAllByOrderId() method")
     void getAllByOrderId_validOrderId_returnOneDto() {
-        when(orderItemRepository.findAllByOrderId(Mockito.anyLong()))
+        when(orderItemRepository.findAllByOrderId(anyLong()))
                 .thenReturn(List.of(VALID_ORDER_ITEM));
-        when(orderItemMapper.toDto(Mockito.any())).thenReturn(VALID_ORDER_ITEM_DTO);
+        when(orderItemMapper.toDto(any())).thenReturn(VALID_ORDER_ITEM_DTO);
 
         List<OrderItemDto> actual = orderItemService.getAllByOrderId(VALID_ORDER_ID);
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(List.of(VALID_ORDER_ITEM_DTO), actual);
+        assertNotNull(actual);
+        assertEquals(List.of(VALID_ORDER_ITEM_DTO), actual);
+    }
+
+    @Test
+    @DisplayName("Verify getAllByOrderId() with no order items")
+    void getAllByOrderId_noItems_returnEmptyList() {
+        when(orderItemRepository.findAllByOrderId(anyLong()))
+                .thenReturn(Collections.emptyList());
+
+        List<OrderItemDto> actual = orderItemService.getAllByOrderId(VALID_ORDER_ID);
+
+        assertNotNull(actual);
+        assertTrue(actual.isEmpty());
     }
 
     @Test
     @DisplayName("Verify getByItemIdAndOrderId() method")
     void getByItemIdAndOrderId_validItemIdAndOrderId_returnOneItem() {
-        when(orderItemRepository.findAllByIdAndOrderId(Mockito.anyLong(), Mockito.anyLong()))
+        when(orderItemRepository.findAllByIdAndOrderId(anyLong(), anyLong()))
                 .thenReturn(Optional.of(VALID_ORDER_ITEM));
-        when(orderItemMapper.toDto(Mockito.any())).thenReturn(VALID_ORDER_ITEM_DTO);
+        when(orderItemMapper.toDto(any())).thenReturn(VALID_ORDER_ITEM_DTO);
 
         OrderItemDto actual = orderItemService.getByItemIdAndOrderId(VALID_ITEM_ID, VALID_ORDER_ID);
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(VALID_ORDER_ITEM_DTO, actual);
+        assertNotNull(actual);
+        assertEquals(VALID_ORDER_ITEM_DTO, actual);
+    }
+
+    @Test
+    @DisplayName("Verify getByItemIdAndOrderId() with non-existent item")
+    void getByItemIdAndOrderId_nonExistentItem_throwEntityNotFoundException() {
+        when(orderItemRepository.findAllByIdAndOrderId(anyLong(), anyLong()))
+                .thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class,
+                () -> orderItemService.getByItemIdAndOrderId(VALID_ITEM_ID, VALID_ORDER_ID));
     }
 }

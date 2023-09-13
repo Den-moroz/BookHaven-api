@@ -1,5 +1,8 @@
 package core.basesyntax.bookstore.orderitem;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import core.basesyntax.bookstore.model.Book;
 import core.basesyntax.bookstore.model.Order;
 import core.basesyntax.bookstore.model.OrderItem;
@@ -13,7 +16,6 @@ import java.util.Set;
 import javax.sql.DataSource;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -98,9 +100,9 @@ public class OrderItemRepositoryTest {
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void findAllByOrderId_validOrderId_returnOneItem() {
         List<OrderItem> actual = orderItemRepository.findAllByOrderId(VALID_ORDER_ID);
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(2, actual.size());
-        Assertions.assertEquals(List.of(VALID_ORDER_ITEM_1.getOrder(),
+        assertNotNull(actual);
+        assertEquals(2, actual.size());
+        assertEquals(List.of(VALID_ORDER_ITEM_1.getOrder(),
                         VALID_ORDER_ITEM_2.getOrder()),
                 List.of(actual.get(0).getOrder(), actual.get(1).getOrder()));
     }
@@ -112,7 +114,7 @@ public class OrderItemRepositoryTest {
     void findAllByIdAndOrderId_validIdAndOrderId_returnOrderItem() {
         OrderItem actual = orderItemRepository.findAllByIdAndOrderId(VALID_ITEM_ID,
                 VALID_ORDER_ID).get();
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(VALID_ORDER_ITEM_1.getOrder(), actual.getOrder());
+        assertNotNull(actual);
+        assertEquals(VALID_ORDER_ITEM_1.getOrder(), actual.getOrder());
     }
 }

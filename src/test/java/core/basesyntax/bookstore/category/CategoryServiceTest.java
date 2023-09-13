@@ -1,5 +1,9 @@
 package core.basesyntax.bookstore.category;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -16,14 +20,12 @@ import core.basesyntax.bookstore.service.impl.CategoryServiceImpl;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -65,7 +67,7 @@ public class CategoryServiceTest {
         when(categoryMapper.toDto(VALID_CATEGORY)).thenReturn(VALID_RESPONSE);
 
         CategoryDto savedCategoryDto = categoryService.save(REQUEST_DTO);
-        Assertions.assertEquals(VALID_RESPONSE, savedCategoryDto);
+        assertEquals(VALID_RESPONSE, savedCategoryDto);
         verify(categoryRepository, times(1)).save(VALID_CATEGORY);
         verifyNoMoreInteractions(categoryRepository, categoryMapper);
     }
@@ -83,44 +85,44 @@ public class CategoryServiceTest {
         List<CategoryDto> actual = categoryService.findAll(pageable);
         verify(categoryRepository).findAll(pageable);
         verify(categoryMapper).toDto(VALID_CATEGORY);
-        Assertions.assertEquals(Collections.singletonList(VALID_RESPONSE), actual);
+        assertEquals(Collections.singletonList(VALID_RESPONSE), actual);
     }
 
     @Test
     @DisplayName("Test getById with existing category")
     void getById_validId_returnCategoryDto() {
-        when(categoryRepository.findById(Mockito.anyLong()))
+        when(categoryRepository.findById(anyLong()))
                 .thenReturn(Optional.of(VALID_CATEGORY));
         when(categoryMapper.toDto(VALID_CATEGORY)).thenReturn(VALID_RESPONSE);
 
         CategoryDto actual = categoryService.getById(1L);
         verify(categoryRepository).findById(1L);
         verify(categoryMapper).toDto(VALID_CATEGORY);
-        Assertions.assertEquals(VALID_RESPONSE, actual);
+        assertEquals(VALID_RESPONSE, actual);
     }
 
     @Test
     @DisplayName("Test getById with non-existing category")
     void getById_invalidId_throwException() {
-        when(categoryRepository.findById(Mockito.anyLong()))
+        when(categoryRepository.findById(anyLong()))
                 .thenReturn(Optional.empty());
-        EntityNotFoundException exception = Assertions.assertThrows(EntityNotFoundException.class,
+        EntityNotFoundException exception = assertThrows(EntityNotFoundException.class,
                 () -> categoryService.getById(100L));
         verify(categoryRepository).findById(100L);
-        Assertions.assertEquals("Category not found with id: 100", exception.getMessage());
+        assertEquals("Category not found with id: 100", exception.getMessage());
     }
 
     @Test
     @DisplayName("Test update with existing category")
     void update_validRequest_returnResponse() {
-        when(categoryRepository.findById(Mockito.anyLong()))
+        when(categoryRepository.findById(anyLong()))
                 .thenReturn(Optional.of(VALID_CATEGORY));
         when(categoryMapper.toModel(REQUEST_DTO)).thenReturn(VALID_CATEGORY);
         when(categoryRepository.save(VALID_CATEGORY)).thenReturn(VALID_CATEGORY);
         when(categoryMapper.toDto(VALID_CATEGORY)).thenReturn(VALID_RESPONSE);
 
         CategoryDto actual = categoryService.update(1L, REQUEST_DTO);
-        Assertions.assertEquals(VALID_RESPONSE, actual);
+        assertEquals(VALID_RESPONSE, actual);
         verify(categoryRepository).findById(1L);
         verify(categoryMapper).toModel(REQUEST_DTO);
         verify(categoryRepository).save(VALID_CATEGORY);
@@ -134,7 +136,7 @@ public class CategoryServiceTest {
         when(categoryRepository.findById(validCategoryId)).thenReturn(Optional.of(VALID_CATEGORY));
         doNothing().when(categoryRepository).delete(VALID_CATEGORY);
 
-        Assertions.assertDoesNotThrow(() -> categoryService.deleteById(validCategoryId));
+        assertDoesNotThrow(() -> categoryService.deleteById(validCategoryId));
         verify(categoryRepository).delete(VALID_CATEGORY);
         verify(categoryRepository).findById(validCategoryId);
     }

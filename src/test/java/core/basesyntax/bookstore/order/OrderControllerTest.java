@@ -1,5 +1,8 @@
 package core.basesyntax.bookstore.order;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +19,6 @@ import javax.sql.DataSource;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -124,13 +126,13 @@ public class OrderControllerTest {
                             result.getResponse().getContentAsString(),
                             OrderDto.class
                     );
-                    Assertions.assertNotNull(actual);
+                    assertNotNull(actual);
                     boolean expression = EqualsBuilder.reflectionEquals(
                             VALID_RESPONSE,
                             actual,
                             "id", "orderDate", "total"
                     );
-                    Assertions.assertTrue(expression);
+                    assertTrue(expression);
                 });
     }
 
@@ -165,14 +167,14 @@ public class OrderControllerTest {
                                     .getContentAsString(),
                             objectMapper.getTypeFactory().constructCollectionType(List.class,
                                     OrderDto.class));
-                    Assertions.assertNotNull(actualList);
-                    Assertions.assertEquals(2, actualList.size());
+                    assertNotNull(actualList);
+                    assertEquals(2, actualList.size());
                     boolean expression = EqualsBuilder.reflectionEquals(
                             VALID_RESPONSE,
                             actualList.get(1),
                             "id", "orderDate"
                     );
-                    Assertions.assertTrue(expression);
+                    assertTrue(expression);
                 });
     }
 
@@ -193,14 +195,14 @@ public class OrderControllerTest {
                                     .getContentAsString(),
                             objectMapper.getTypeFactory().constructCollectionType(List.class,
                                     OrderItemDto.class));
-                    Assertions.assertNotNull(actualList);
-                    Assertions.assertEquals(1, actualList.size());
+                    assertNotNull(actualList);
+                    assertEquals(1, actualList.size());
                     boolean expression = EqualsBuilder.reflectionEquals(
                             VALID_ORDER_ITEM,
                             actualList.get(0),
                             "id"
                     );
-                    Assertions.assertTrue(expression);
+                    assertTrue(expression);
                 });
     }
 
@@ -220,9 +222,9 @@ public class OrderControllerTest {
                 .andExpect(result -> {
                     OrderDto actual = objectMapper.readValue(result.getResponse()
                                     .getContentAsString(), OrderDto.class);
-                    Assertions.assertNotNull(actual);
-                    Assertions.assertEquals(VALID_UPDATE_RESPONSE.getStatus(), actual.getStatus());
-                    Assertions.assertEquals(VALID_UPDATE_RESPONSE.getUserId(), actual.getUserId());
+                    assertNotNull(actual);
+                    assertEquals(VALID_UPDATE_RESPONSE.getStatus(), actual.getStatus());
+                    assertEquals(VALID_UPDATE_RESPONSE.getUserId(), actual.getUserId());
                 });
     }
 
@@ -256,13 +258,13 @@ public class OrderControllerTest {
                 .andExpect(result -> {
                     OrderItemDto actual = objectMapper.readValue(result.getResponse()
                             .getContentAsString(), OrderItemDto.class);
-                    Assertions.assertNotNull(actual);
+                    assertNotNull(actual);
                     boolean expression = EqualsBuilder.reflectionEquals(
                             VALID_ORDER_ITEM,
                             actual,
                             "id"
                     );
-                    Assertions.assertTrue(expression);
+                    assertTrue(expression);
                 });
     }
 

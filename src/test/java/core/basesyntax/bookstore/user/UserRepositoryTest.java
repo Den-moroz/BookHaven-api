@@ -1,14 +1,18 @@
 package core.basesyntax.bookstore.user;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import core.basesyntax.bookstore.model.Role;
 import core.basesyntax.bookstore.model.User;
 import core.basesyntax.bookstore.repository.user.UserRepository;
 import java.sql.Connection;
+import java.util.Optional;
 import java.util.Set;
 import javax.sql.DataSource;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,6 +27,7 @@ import org.springframework.test.context.jdbc.Sql;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class UserRepositoryTest {
     private static final String VALID_EMAIL = "admin@i.ua";
+    private static final String NON_EXISTENT_EMAIL = "nonexistent@example.com";
     private static final User VALID_USER = new User();
     private static final Role VALID_ROLE = new Role();
 
@@ -66,7 +71,15 @@ public class UserRepositoryTest {
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     void findByEmailFetchRoles_adminUser_returnUser() {
         User actual = userRepository.findByEmailFetchRoles(VALID_EMAIL).get();
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(VALID_USER, actual);
+        assertNotNull(actual);
+        assertEquals(VALID_USER, actual);
+    }
+
+    @Test
+    @DisplayName("Find by email fetch roles - User not found")
+    void findByEmailFetchRoles_userNotFound_returnEmptyOptional() {
+        Optional<User> userOptional = userRepository.findByEmailFetchRoles(NON_EXISTENT_EMAIL);
+
+        assertTrue(userOptional.isEmpty());
     }
 }

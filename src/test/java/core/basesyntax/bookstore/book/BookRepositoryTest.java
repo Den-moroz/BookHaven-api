@@ -139,6 +139,15 @@ class BookRepositoryTest {
         Assertions.assertEquals(VALID_BOOK_1.getTitle(), actual.get().getTitle());
     }
 
+    @Test
+    @DisplayName("Find all books by invalid category id")
+    void findAllByCategoriesId_invalidCategoryId_returnEmptyList() {
+        List<Long> invalidCategoryIds = List.of(-1L, -2L);
+        List<Book> actual = bookRepository
+                .findAllByCategoriesIdWithCategories(invalidCategoryIds.get(0));
+        Assertions.assertTrue(actual.isEmpty());
+    }
+
     private List<Category> saveCategory() {
         Category savedCategory1 = categoryRepository.save(VALID_CATEGORY_1);
         Category savedCategory2 = categoryRepository.save(VALID_CATEGORY_2);

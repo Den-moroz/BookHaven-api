@@ -1,5 +1,8 @@
 package core.basesyntax.bookstore.user;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -14,7 +17,6 @@ import javax.sql.DataSource;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -127,13 +129,13 @@ public class AuthenticationControllerTest {
                             result.getResponse().getContentAsString(),
                             UserRegistrationResponseDto.class
                     );
-                    Assertions.assertNotNull(actual);
+                    assertNotNull(actual);
                     boolean expression = EqualsBuilder.reflectionEquals(
                             VALID_REGISTRATION_RESPONSE,
                             actual,
                             "id"
                     );
-                    Assertions.assertTrue(expression);
+                    assertTrue(expression);
                 });
     }
 
@@ -154,11 +156,11 @@ public class AuthenticationControllerTest {
                     JsonNode responseNode = objectMapper.readTree(responseContent);
                     JsonNode errorsNode = responseNode.get("errors");
 
-                    Assertions.assertNotNull(errorsNode);
-                    Assertions.assertTrue(errorsNode.isArray());
+                    assertNotNull(errorsNode);
+                    assertTrue(errorsNode.isArray());
 
                     JsonNode firstError = errorsNode.get(0);
-                    Assertions.assertEquals("Passwords do not match", firstError.textValue());
+                    assertEquals("Passwords do not match", firstError.textValue());
                 });
     }
 
@@ -181,7 +183,7 @@ public class AuthenticationControllerTest {
                             result.getResponse().getContentAsString(),
                             UserLoginResponseDto.class
                     );
-                    Assertions.assertNotNull(actual);
+                    assertNotNull(actual);
                 });
     }
 

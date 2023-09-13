@@ -18,7 +18,7 @@ public class OrderItemServiceImpl implements OrderItemService {
     private final OrderItemMapper orderItemMapper;
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<OrderItemDto> getAllByOrderId(Long orderId) {
         return orderItemRepository.findAllByOrderId(orderId)
                 .stream()
@@ -27,7 +27,7 @@ public class OrderItemServiceImpl implements OrderItemService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public OrderItemDto getByItemIdAndOrderId(Long itemId, Long orderId) {
         OrderItem item = orderItemRepository.findAllByIdAndOrderId(itemId, orderId).orElseThrow(
                 () -> new EntityNotFoundException("Order item not found by order id "

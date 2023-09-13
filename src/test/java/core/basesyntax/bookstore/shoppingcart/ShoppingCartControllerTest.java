@@ -1,5 +1,8 @@
 package core.basesyntax.bookstore.shoppingcart;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,7 +17,6 @@ import javax.sql.DataSource;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -123,13 +125,13 @@ public class ShoppingCartControllerTest {
                             result.getResponse().getContentAsString(),
                             CartItemDto.class
                     );
-                    Assertions.assertNotNull(actual);
+                    assertNotNull(actual);
                     boolean expression = EqualsBuilder.reflectionEquals(
                             VALID_RESPONSE,
                             actual,
                             "id"
                     );
-                    Assertions.assertTrue(expression);
+                    assertTrue(expression);
                 });
     }
 
@@ -150,9 +152,9 @@ public class ShoppingCartControllerTest {
                             result.getResponse().getContentAsString(),
                             ShoppingCartDto.class
                     );
-                    Assertions.assertNotNull(actual);
-                    Assertions.assertEquals(2, actual.getCartItems().size());
-                    Assertions.assertEquals(actual.getUserId(),
+                    assertNotNull(actual);
+                    assertEquals(2, actual.getCartItems().size());
+                    assertEquals(actual.getUserId(),
                             VALID_SHOPPING_CART_DTO.getUserId());
                 });
     }
@@ -175,13 +177,13 @@ public class ShoppingCartControllerTest {
                             result.getResponse().getContentAsString(),
                             CartItemDto.class
                     );
-                    Assertions.assertNotNull(actual);
+                    assertNotNull(actual);
                     boolean expression = EqualsBuilder.reflectionEquals(
                             VALID_UPDATE_RESPONSE,
                             actual,
                             "id"
                     );
-                    Assertions.assertTrue(expression);
+                    assertTrue(expression);
                 });
     }
 

@@ -1,5 +1,8 @@
 package core.basesyntax.bookstore.category;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -17,7 +20,6 @@ import javax.sql.DataSource;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -131,14 +133,14 @@ public class CategoryControllerTest {
                             result.getResponse().getContentAsString(),
                             CategoryDto.class
                     );
-                    Assertions.assertNotNull(actual);
+                    assertNotNull(actual);
                     boolean expression = org.apache.commons.lang3.builder.EqualsBuilder
                             .reflectionEquals(
                                     VALID_CATEGORY_DTO,
                                     actual,
                                     "id"
                             );
-                    Assertions.assertTrue(expression);
+                    assertTrue(expression);
                 });
     }
 
@@ -157,14 +159,14 @@ public class CategoryControllerTest {
                                     .getContentAsString(),
                             objectMapper.getTypeFactory().constructCollectionType(List.class,
                                     CategoryDto.class));
-                    Assertions.assertNotNull(actualList);
-                    Assertions.assertEquals(4, actualList.size());
+                    assertNotNull(actualList);
+                    assertEquals(4, actualList.size());
                     boolean expression3 = EqualsBuilder.reflectionEquals(
                             VALID_GET_RESPONSE,
                             actualList.get(1),
                             "id"
                     );
-                    Assertions.assertTrue(expression3);
+                    assertTrue(expression3);
                 });
     }
 
@@ -183,13 +185,13 @@ public class CategoryControllerTest {
                             result.getResponse().getContentAsString(),
                             CategoryDto.class
                     );
-                    Assertions.assertNotNull(actual);
+                    assertNotNull(actual);
                     boolean expression = EqualsBuilder.reflectionEquals(
                             VALID_GET_RESPONSE,
                             actual,
                             "id"
                     );
-                    Assertions.assertTrue(expression);
+                    assertTrue(expression);
                 });
     }
 
@@ -208,15 +210,15 @@ public class CategoryControllerTest {
                             result.getResponse().getContentAsString(),
                             objectMapper.getTypeFactory().constructCollectionType(List.class,
                                     BookDtoWithoutCategoryIds.class));
-                    Assertions.assertNotNull(actualList);
-                    Assertions.assertEquals(1, actualList.size());
+                    assertNotNull(actualList);
+                    assertEquals(1, actualList.size());
                     boolean expression = EqualsBuilder.reflectionEquals(
                             VALID_BOOK_WITHOUT_CATEGORY,
                             actualList.get(0),
                             "id"
                     );
                     System.out.println(actualList.get(0));
-                    Assertions.assertTrue(expression);
+                    assertTrue(expression);
                 });
     }
 
@@ -249,13 +251,13 @@ public class CategoryControllerTest {
                             result.getResponse().getContentAsString(),
                             CategoryDto.class
                     );
-                    Assertions.assertNotNull(actual);
+                    assertNotNull(actual);
                     boolean expression = EqualsBuilder.reflectionEquals(
                             VALID_UPDATE_DTO,
                             actual,
                             "id"
                     );
-                    Assertions.assertTrue(expression);
+                    assertTrue(expression);
                 });
     }
 
