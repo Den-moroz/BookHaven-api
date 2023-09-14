@@ -37,7 +37,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderDto save(CreateOrderRequestDto requestDto) {
-        User user = userService.getUser();
+        User user = userService.getAuthenticatedUser();
         List<CartItem> cartItems = getCartItems(user);
         if (cartItems.isEmpty()) {
             throw new IllegalArgumentException(
@@ -51,10 +51,7 @@ public class OrderServiceImpl implements OrderService {
         order.setShippingAddress(requestDto.shippingAddress());
         order.setTotal(totalPrice);
         Order savedOrder = orderRepository.save(order);
-        Set<OrderItem> orderItems = new HashSet<>();
-        if (!cartItems.isEmpty()) {
-            orderItems = parseToOrderItem(cartItems, savedOrder);
-        }
+        Set<OrderItem> orderItems = parseToOrderItem(cartItems, savedOrder);
         savedOrder.setOrderItems(orderItems);
         return orderMapper.toDto(orderRepository.save(savedOrder));
     }

@@ -35,19 +35,8 @@ public class CartItemServiceImpl implements CartItemService {
         CartItem cartItem = new CartItem();
         cartItem.setBook(bookRepository.getById(cartItemDto.getBookId()));
         cartItem.setQuantity(cartItemDto.getQuantity());
-        Long id = userService.getUser().getId();
-        ShoppingCart shoppingCart = shoppingCartRepository
-                .findById(id)
-                .orElseThrow(
-                        () -> new EntityNotFoundException("Can't find shopping cart by id: " + id));
-        cartItem.setShoppingCart(shoppingCart);
-        List<CartItem> cartItems = new ArrayList<>();
-        cartItems.add(cartItem);
-        if (shoppingCart.getCartItems().isEmpty()) {
-            shoppingCart.setCartItems(cartItems);
-        } else {
-            shoppingCart.getCartItems().add(cartItem);
-        }
+        Long id = userService.getAuthenticatedUser().getId();
+        setShoppingCartAndCartItems(id, cartItem);
         return cartItemMapper.toDto(cartItemRepository.save(cartItem));
     }
 
@@ -73,5 +62,20 @@ public class CartItemServiceImpl implements CartItemService {
                 () -> new EntityNotFoundException("Can't find a cart item with id " + id)
         );
         cartItemRepository.deleteById(id);
+    }
+
+    private void setShoppingCartAndCartItems(Long id, CartItem cartItem) {
+        ShoppingCart shoppingCart = shoppingCartRepository
+                .findById(id)
+                .orElseThrow(
+                        () -> new EntityNotFoundException("Can't find shopping cart by id: " + id));
+        cartItem.setShoppingCart(shoppingCart);
+        List<CartItem> cartItems = new ArrayList<>();
+        cartItems.add(cartItem);
+        if (shoppingCart.getCartItems().isEmpty()) {
+            shoppingCart.setCartItems(cartItems);
+        } else {
+            shoppingCart.getCartItems().add(cartItem);
+        }
     }
 }

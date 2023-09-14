@@ -217,7 +217,6 @@ public class CategoryControllerTest {
                             actualList.get(0),
                             "id"
                     );
-                    System.out.println(actualList.get(0));
                     assertTrue(expression);
                 });
     }

@@ -8,6 +8,6 @@ import core.basesyntax.bookstore.model.User;
 public interface UserService {
     UserRegistrationResponseDto register(UserRegistrationRequestDto request)
             throws RegistrationException;
-
-    User getUser();
+  
+    User getAuthenticatedUser();
 }

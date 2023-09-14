@@ -1,5 +1,8 @@
 package core.basesyntax.bookstore.book;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import core.basesyntax.bookstore.dto.book.BookSearchParametersDto;
 import core.basesyntax.bookstore.model.Book;
 import core.basesyntax.bookstore.model.Category;
@@ -14,7 +17,6 @@ import java.util.Set;
 import javax.sql.DataSource;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -98,8 +100,8 @@ class BookRepositoryTest {
                 .toList();
 
         List<Book> actual = bookRepository.findAllByCategoriesIdWithCategories(categoryIds.get(0));
-        Assertions.assertEquals(1, actual.size());
-        Assertions.assertEquals(VALID_BOOK_1.getTitle(), actual.get(0).getTitle());
+        assertEquals(1, actual.size());
+        assertEquals(VALID_BOOK_1.getTitle(), actual.get(0).getTitle());
     }
 
     @Test
@@ -110,9 +112,9 @@ class BookRepositoryTest {
         savedBooks();
         Pageable pageable = PageRequest.of(0, 10);
         List<Book> actual = bookRepository.findAllWithCategories(pageable);
-        Assertions.assertEquals(2, actual.size());
-        Assertions.assertEquals(VALID_BOOK_1.getAuthor(), actual.get(0).getAuthor());
-        Assertions.assertEquals(VALID_BOOK_2.getAuthor(), actual.get(1).getAuthor());
+        assertEquals(2, actual.size());
+        assertEquals(VALID_BOOK_1.getAuthor(), actual.get(0).getAuthor());
+        assertEquals(VALID_BOOK_2.getAuthor(), actual.get(1).getAuthor());
     }
 
     @Test
@@ -125,8 +127,8 @@ class BookRepositoryTest {
                 new String[]{"Book 1"}, new String[]{"Author 1"}, 10, 30);
         Specification<Book> bookSpecification = bookSpecificationBuilder.build(params);
         List<Book> actual = bookRepository.findAll(bookSpecification);
-        Assertions.assertEquals(1, actual.size());
-        Assertions.assertEquals(VALID_BOOK_1.getCoverImage(), actual.get(0).getCoverImage());
+        assertEquals(1, actual.size());
+        assertEquals(VALID_BOOK_1.getCoverImage(), actual.get(0).getCoverImage());
     }
 
     @Test
@@ -136,7 +138,7 @@ class BookRepositoryTest {
     void findByIdWithCategories_validTwoBook_returnBook() {
         List<Book> savedBooks = savedBooks();
         Optional<Book> actual = bookRepository.findByIdWithCategories(savedBooks.get(0).getId());
-        Assertions.assertEquals(VALID_BOOK_1.getTitle(), actual.get().getTitle());
+        assertEquals(VALID_BOOK_1.getTitle(), actual.get().getTitle());
     }
 
     @Test
@@ -145,7 +147,7 @@ class BookRepositoryTest {
         List<Long> invalidCategoryIds = List.of(-1L, -2L);
         List<Book> actual = bookRepository
                 .findAllByCategoriesIdWithCategories(invalidCategoryIds.get(0));
-        Assertions.assertTrue(actual.isEmpty());
+        assertTrue(actual.isEmpty());
     }
 
     private List<Category> saveCategory() {

@@ -30,7 +30,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     @Transactional(readOnly = true)
     public ShoppingCartDto getShoppingCart(Pageable pageable) {
-        User authenticatedUser = userService.getUser();
+        User authenticatedUser = userService.getAuthenticatedUser();
         ShoppingCart shoppingCart = shoppingCartRepository
                 .findById(authenticatedUser.getId())
                 .orElseThrow(() -> new EntityNotFoundException("Can't find a shopping cart with id"
