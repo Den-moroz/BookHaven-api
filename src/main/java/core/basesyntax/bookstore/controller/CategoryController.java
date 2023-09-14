@@ -51,7 +51,7 @@ public class CategoryController {
     }
 
     @GetMapping(path = "/{id}")
-    @Operation(summary = "Return category response by id")
+    @Operation(summary = "Return a category response by id")
     public CategoryDto getCategoryById(@PathVariable Long id) {
         return categoryService.getById(id);
     }
@@ -67,13 +67,13 @@ public class CategoryController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(path = "/{id}")
-    @Operation(summary = "Delete category for id", description = "Implements soft delete")
+    @Operation(summary = "Delete category by id", description = "Implemented soft delete")
     public void deleteCategory(@PathVariable Long id) {
         categoryService.deleteById(id);
     }
 
     @GetMapping("/{id}/books")
-    @Operation(summary = "Get books by category id")
+    @Operation(summary = "Get books without categories by category id")
     public List<BookDtoWithoutCategoryIds> getBooksByCategoryId(@PathVariable Long id) {
         categoryRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException("Category not found"));

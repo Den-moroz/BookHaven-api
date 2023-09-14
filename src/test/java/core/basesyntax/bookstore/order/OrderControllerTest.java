@@ -147,7 +147,7 @@ public class OrderControllerTest {
         );
 
         resultActions
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
+                .andExpect(MockMvcResultMatchers.status().isConflict());
     }
 
     @WithMockUser(username = "email@i.ua")

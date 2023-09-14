@@ -99,7 +99,7 @@ public class CartItemServiceTest {
     @DisplayName("Verify save() method")
     void save_validRequest_returnDto() {
         when(bookRepository.getById(anyLong())).thenReturn(DEFAULT_BOOK);
-        when(userService.getUser()).thenReturn(DEFAULT_USER);
+        when(userService.getAuthenticatedUser()).thenReturn(DEFAULT_USER);
         when(shoppingCartRepository.findById(anyLong()))
                 .thenReturn(Optional.of(DEFAULT_SHOPPING_CART));
         when(cartItemMapper.toDto(any())).thenReturn(VALID_RESPONSE_DTO);
@@ -110,7 +110,7 @@ public class CartItemServiceTest {
         assertEquals(VALID_RESPONSE_DTO, actual);
 
         verify(bookRepository, times(1)).getById(anyLong());
-        verify(userService, times(1)).getUser();
+        verify(userService, times(1)).getAuthenticatedUser();
         verify(shoppingCartRepository, times(1)).findById(anyLong());
         verify(cartItemMapper, times(1)).toDto(any());
         verify(cartItemRepository, times(1)).save(any());
@@ -120,7 +120,7 @@ public class CartItemServiceTest {
     @Test
     @DisplayName("Verify save() method with non-existent shopping cart")
     void save_nonExistentShoppingCart_throwException() {
-        when(userService.getUser()).thenReturn(new User());
+        when(userService.getAuthenticatedUser()).thenReturn(new User());
 
         assertThrows(EntityNotFoundException.class, () -> cartItemService.save(VALID_REQUEST));
     }

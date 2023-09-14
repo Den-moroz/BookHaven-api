@@ -122,7 +122,7 @@ public class OrderServiceTest {
     @Test
     @DisplayName("Verify save() method")
     void save_validRequest_returnResponse() {
-        when(userService.getUser()).thenReturn(DEFAULT_USER);
+        when(userService.getAuthenticatedUser()).thenReturn(DEFAULT_USER);
         when(orderRepository.save(any())).thenReturn(VALID_ORDER);
         when(orderMapper.toDto(any())).thenReturn(VALID_ORDER_DTO);
         when(shoppingCartRepository.findById(anyLong()))
@@ -133,7 +133,7 @@ public class OrderServiceTest {
         assertNotNull(actual);
         assertEquals(VALID_ORDER_DTO, actual);
 
-        verify(userService, times(1)).getUser();
+        verify(userService, times(1)).getAuthenticatedUser();
         verify(orderRepository, times(2)).save(any());
         verify(orderMapper, times(1)).toDto(any());
         verify(shoppingCartRepository, times(1)).findById(anyLong());
@@ -143,7 +143,7 @@ public class OrderServiceTest {
     @Test
     @DisplayName("Verify save() method with Empty Cart")
     void save_emptyCart_throwsIllegalArgumentException() {
-        when(userService.getUser()).thenReturn(DEFAULT_USER);
+        when(userService.getAuthenticatedUser()).thenReturn(DEFAULT_USER);
         when(shoppingCartRepository.findById(anyLong()))
                 .thenReturn(Optional.of(SHOPPING_CART_WITHOUT_CART_ITEMS));
 
@@ -151,7 +151,7 @@ public class OrderServiceTest {
             orderService.save(VALID_REQUEST);
         });
 
-        verify(userService, times(1)).getUser();
+        verify(userService, times(1)).getAuthenticatedUser();
         verify(orderRepository, never()).save(any());
         verify(orderMapper, never()).toDto(any());
         verify(shoppingCartRepository, times(1)).findById(anyLong());

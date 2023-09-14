@@ -44,6 +44,7 @@ public class BookController {
     }
 
     @GetMapping(path = "/{id}")
+    @Operation(summary = "Get a book by id")
     public BookDto getById(@PathVariable @Valid Long id) {
         return bookService.getBookById(id);
     }
@@ -57,7 +58,7 @@ public class BookController {
     }
 
     @GetMapping(path = "/search")
-    @Operation(summary = "Search books for filter", description = "Has such filters as: "
+    @Operation(summary = "Get books by filter", description = "Has such filters as: "
             + "title, author, fromPrice and toPrice")
     public List<BookDto> searchBooks(BookSearchParametersDto searchParameters) {
         return bookService.findByParams(searchParameters);
@@ -66,7 +67,7 @@ public class BookController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(path = "/{id}")
-    @Operation(summary = "Delete book for id", description = "Implements soft delete")
+    @Operation(summary = "Delete book by id", description = "Implemented soft delete")
     public void delete(@PathVariable Long id) {
         bookService.deleteById(id);
     }

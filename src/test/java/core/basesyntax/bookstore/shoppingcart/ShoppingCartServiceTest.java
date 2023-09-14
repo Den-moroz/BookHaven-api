@@ -62,7 +62,7 @@ public class ShoppingCartServiceTest {
     @Test
     @DisplayName("Verify get shopping cart method")
     void getShoppingCart_includingPagination_returnShoppingCart() {
-        when(userService.getUser()).thenReturn(DEFAULT_USER);
+        when(userService.getAuthenticatedUser()).thenReturn(DEFAULT_USER);
         when(shoppingCartRepository.findById(anyLong()))
                 .thenReturn(Optional.of(VALID_SHOPPING_CART));
         when(cartItemService.findByShoppingCartId(VALID_SHOPPING_CART.getId()))
@@ -73,7 +73,7 @@ public class ShoppingCartServiceTest {
         assertNotNull(actual);
         assertEquals(VALID_DTO_RESPONSE, actual);
 
-        verify(userService, times(1)).getUser();
+        verify(userService, times(1)).getAuthenticatedUser();
         verify(shoppingCartRepository, times(1)).findById(DEFAULT_USER.getId());
         verify(cartItemService, times(1)).findByShoppingCartId(VALID_SHOPPING_CART.getId());
     }
@@ -81,14 +81,14 @@ public class ShoppingCartServiceTest {
     @Test
     @DisplayName("Verify get shopping cart method when cart is not found")
     void getShoppingCart_cartNotFound_throwEntityNotFoundException() {
-        when(userService.getUser()).thenReturn(DEFAULT_USER);
+        when(userService.getAuthenticatedUser()).thenReturn(DEFAULT_USER);
         when(shoppingCartRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(EntityNotFoundException.class, () -> {
             shoppingCartService.getShoppingCart(PageRequest.of(0, 10));
         });
 
-        verify(userService, times(1)).getUser();
+        verify(userService, times(1)).getAuthenticatedUser();
         verify(shoppingCartRepository, times(1)).findById(DEFAULT_USER.getId());
         verify(cartItemService, never()).findByShoppingCartId(anyLong());
     }
