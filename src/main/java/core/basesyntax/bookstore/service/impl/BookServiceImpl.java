@@ -9,6 +9,7 @@ import core.basesyntax.bookstore.model.Book;
 import core.basesyntax.bookstore.repository.book.BookRepository;
 import core.basesyntax.bookstore.repository.book.BookSpecificationBuilder;
 import core.basesyntax.bookstore.service.BookService;
+import jakarta.persistence.criteria.JoinType;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -56,7 +57,14 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<BookDto> findByParams(BookSearchParametersDto params) {
         Specification<Book> bookSpecification = bookSpecificationBuilder.build(params);
-        return bookRepository.findAll(bookSpecification).stream()
+
+        List<Book> books = bookRepository.findAll((root, query, criteriaBuilder) -> {
+            root.fetch("categories", JoinType.LEFT);
+            query.distinct(true);
+            return bookSpecification.toPredicate(root, query, criteriaBuilder);
+        });
+
+        return books.stream()
                 .map(bookMapper::toDto)
                 .toList();
     }

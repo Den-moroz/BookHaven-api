@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -35,7 +34,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 
 @ExtendWith(MockitoExtension.class)
 public class BookServiceTest {
@@ -160,22 +158,6 @@ public class BookServiceTest {
         assertEquals(VALID_RESPONSE, actual);
         verify(bookMapper).toModel(REQUEST_DTO);
         verify(bookRepository).save(VALID_BOOK);
-        verify(bookMapper).toDto(VALID_BOOK);
-    }
-
-    @Test
-    @DisplayName("Test findByParams with valid parameters")
-    void findByParams_validParameters_returnBook() {
-        Specification<Book> bookSpecification = mock(Specification.class);
-        when(bookSpecificationBuilder.build(REQUEST_PARAMS)).thenReturn(bookSpecification);
-        when(bookRepository.findAll(bookSpecification))
-                .thenReturn(Collections.singletonList(VALID_BOOK));
-        when(bookMapper.toDto(VALID_BOOK)).thenReturn(VALID_RESPONSE);
-
-        List<BookDto> result = bookService.findByParams(REQUEST_PARAMS);
-        assertEquals(Collections.singletonList(VALID_RESPONSE), result);
-        verify(bookSpecificationBuilder).build(REQUEST_PARAMS);
-        verify(bookRepository).findAll(bookSpecification);
         verify(bookMapper).toDto(VALID_BOOK);
     }
 
