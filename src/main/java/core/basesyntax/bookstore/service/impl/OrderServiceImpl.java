@@ -39,6 +39,10 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto save(CreateOrderRequestDto requestDto) {
         User user = userService.getAuthenticatedUser();
         List<CartItem> cartItems = getCartItems(user);
+        if (cartItems.isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Cannot create an order with an empty shopping cart.");
+        }
         BigDecimal totalPrice = calculateTotalPrice(cartItems);
         Order order = new Order();
         order.setUser(user);
@@ -46,14 +50,14 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(Order.Status.PENDING);
         order.setShippingAddress(requestDto.shippingAddress());
         order.setTotal(totalPrice);
-        order = orderRepository.save(order);
-        Set<OrderItem> orderItems = parseToOrderItem(cartItems, order);
-        order.setOrderItems(orderItems);
-        return orderMapper.toDto(orderRepository.save(order));
+        Order savedOrder = orderRepository.save(order);
+        Set<OrderItem> orderItems = parseToOrderItem(cartItems, savedOrder);
+        savedOrder.setOrderItems(orderItems);
+        return orderMapper.toDto(orderRepository.save(savedOrder));
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<OrderDto> getAll() {
         return orderRepository.findAll()
                 .stream()

@@ -58,6 +58,9 @@ public class CartItemServiceImpl implements CartItemService {
 
     @Override
     public void delete(Long id) {
+        cartItemRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Can't find a cart item with id " + id)
+        );
         cartItemRepository.deleteById(id);
     }
 

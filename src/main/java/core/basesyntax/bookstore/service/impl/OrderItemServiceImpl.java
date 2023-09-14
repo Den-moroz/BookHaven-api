@@ -1,6 +1,9 @@
 package core.basesyntax.bookstore.service.impl;
 
 import core.basesyntax.bookstore.dto.orderitem.OrderItemDto;
+import core.basesyntax.bookstore.exception.EntityNotFoundException;
+import core.basesyntax.bookstore.mapper.OrderItemMapper;
+import core.basesyntax.bookstore.model.OrderItem;
 import core.basesyntax.bookstore.mapper.OrderItemMapper;
 import core.basesyntax.bookstore.repository.orderitem.OrderItemRepository;
 import core.basesyntax.bookstore.service.OrderItemService;
@@ -16,7 +19,7 @@ public class OrderItemServiceImpl implements OrderItemService {
     private final OrderItemMapper orderItemMapper;
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public List<OrderItemDto> getAllByOrderId(Long orderId) {
         return orderItemRepository.findAllByOrderId(orderId)
                 .stream()
@@ -25,8 +28,12 @@ public class OrderItemServiceImpl implements OrderItemService {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public OrderItemDto getByItemIdAndOrderId(Long itemId, Long orderId) {
-        return orderItemMapper.toDto(orderItemRepository.findAllByIdAndOrderId(itemId, orderId));
+        OrderItem item = orderItemRepository.findAllByIdAndOrderId(itemId, orderId).orElseThrow(
+                () -> new EntityNotFoundException("Order item not found by order id "
+                        + orderId + ", and order item id" + itemId)
+        );
+        return orderItemMapper.toDto(item);
     }
 }

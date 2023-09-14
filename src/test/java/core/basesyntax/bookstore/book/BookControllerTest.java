@@ -1,5 +1,8 @@
 package core.basesyntax.bookstore.book;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -17,7 +20,6 @@ import javax.sql.DataSource;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -165,14 +167,14 @@ class BookControllerTest {
                             result.getResponse().getContentAsString(),
                             BookDto.class
                     );
-                    Assertions.assertNotNull(actual);
-                    boolean expression = org.apache.commons.lang3.builder.EqualsBuilder
+                    assertNotNull(actual);
+                    boolean expression = EqualsBuilder
                             .reflectionEquals(
                                     VALID_BOOK_DTO_1,
                                     actual,
                                     "id"
                             );
-                    Assertions.assertTrue(expression);
+                    assertTrue(expression);
                 });
     }
 
@@ -191,15 +193,14 @@ class BookControllerTest {
                                     .getContentAsString(),
                             objectMapper.getTypeFactory().constructCollectionType(List.class,
                                     BookDto.class));
-                    Assertions.assertNotNull(actualList);
-                    Assertions.assertEquals(3, actualList.size());
+                    assertNotNull(actualList);
+                    assertEquals(3, actualList.size());
                     boolean expression3 = EqualsBuilder.reflectionEquals(
                             VALID_UPDATE_DTO,
                             actualList.get(2),
                             "id"
                     );
-                    System.out.println(actualList.get(2));
-                    Assertions.assertTrue(expression3);
+                    assertTrue(expression3);
                 });
     }
 
@@ -218,13 +219,13 @@ class BookControllerTest {
                             result.getResponse().getContentAsString(),
                             BookDto.class
                     );
-                    Assertions.assertNotNull(actual);
+                    assertNotNull(actual);
                     boolean expression = EqualsBuilder.reflectionEquals(
                             VALID_BOOK_DTO_2,
                             actual,
                             "id"
                     );
-                    Assertions.assertTrue(expression);
+                    assertTrue(expression);
                 });
     }
 
@@ -264,14 +265,14 @@ class BookControllerTest {
                                     .getContentAsString(),
                             objectMapper.getTypeFactory().constructCollectionType(List.class,
                                     BookDto.class));
-                    Assertions.assertNotNull(actualList);
-                    Assertions.assertEquals(1, actualList.size());
+                    assertNotNull(actualList);
+                    assertEquals(1, actualList.size());
                     boolean expression = EqualsBuilder.reflectionEquals(
                             VALID_BOOK_DTO_3,
                             actualList.get(0),
                             "id"
                     );
-                    Assertions.assertTrue(expression);
+                    assertTrue(expression);
                 });
     }
 
@@ -293,13 +294,13 @@ class BookControllerTest {
                             result.getResponse().getContentAsString(),
                             BookDto.class
                     );
-                    Assertions.assertNotNull(actual);
+                    assertNotNull(actual);
                     boolean expression = EqualsBuilder.reflectionEquals(
                             VALID_UPDATE_DTO,
                             actual,
                             "id"
                     );
-                    Assertions.assertTrue(expression);
+                    assertTrue(expression);
                 });
     }
 
