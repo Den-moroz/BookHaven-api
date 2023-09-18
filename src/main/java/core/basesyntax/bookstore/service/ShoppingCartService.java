@@ -8,5 +8,5 @@ import org.springframework.data.domain.Pageable;
 public interface ShoppingCartService {
     CartItemDto save(CreateCartItemDto requestDto);
 
-    ShoppingCartDto getShoppingCart(Pageable pageable);
+    ShoppingCartDto getShoppingCart();
 }

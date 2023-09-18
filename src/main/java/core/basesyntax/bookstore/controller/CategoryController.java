@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -46,7 +48,8 @@ public class CategoryController {
     @GetMapping
     @Operation(summary = "Get all categories", description = "Get a list of all category, "
             + "pagination and sorting are also included")
-    public List<CategoryDto> getAll(Pageable pageable) {
+    public List<CategoryDto> getAll(@RequestParam(defaultValue = "0") int page) {
+        Pageable pageable = PageRequest.of(page, 20);
         return categoryService.findAll(pageable);
     }
 

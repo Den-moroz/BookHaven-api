@@ -29,7 +29,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     @Transactional(readOnly = true)
-    public ShoppingCartDto getShoppingCart(Pageable pageable) {
+    public ShoppingCartDto getShoppingCart() {
         User authenticatedUser = userService.getAuthenticatedUser();
         ShoppingCart shoppingCart = shoppingCartRepository
                 .findById(authenticatedUser.getId())

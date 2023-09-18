@@ -37,8 +37,8 @@ public class ShoppingCartController {
     @GetMapping
     @Operation(summary = "Get a shopping cart",
             description = "Pagination and sorting are also included")
-    public ShoppingCartDto getShoppingCart(Pageable pageable) {
-        return shoppingCartService.getShoppingCart(pageable);
+    public ShoppingCartDto getShoppingCart() {
+        return shoppingCartService.getShoppingCart();
     }
 
     @PutMapping("/cart-items/{id}")
