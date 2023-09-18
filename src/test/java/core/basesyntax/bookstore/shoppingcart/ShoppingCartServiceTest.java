@@ -26,8 +26,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 @ExtendWith(MockitoExtension.class)
 public class ShoppingCartServiceTest {
@@ -68,8 +66,7 @@ public class ShoppingCartServiceTest {
         when(cartItemService.findByShoppingCartId(VALID_SHOPPING_CART.getId()))
                 .thenReturn(new HashSet<>());
 
-        Pageable pageable = PageRequest.of(0, 10);
-        ShoppingCartDto actual = shoppingCartService.getShoppingCart(pageable);
+        ShoppingCartDto actual = shoppingCartService.getShoppingCart();
         assertNotNull(actual);
         assertEquals(VALID_DTO_RESPONSE, actual);
 
@@ -85,7 +82,7 @@ public class ShoppingCartServiceTest {
         when(shoppingCartRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(EntityNotFoundException.class, () -> {
-            shoppingCartService.getShoppingCart(PageRequest.of(0, 10));
+            shoppingCartService.getShoppingCart();
         });
 
         verify(userService, times(1)).getAuthenticatedUser();

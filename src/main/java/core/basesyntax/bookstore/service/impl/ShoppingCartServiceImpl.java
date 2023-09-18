@@ -11,7 +11,6 @@ import core.basesyntax.bookstore.service.CartItemService;
 import core.basesyntax.bookstore.service.ShoppingCartService;
 import core.basesyntax.bookstore.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
