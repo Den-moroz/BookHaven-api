@@ -40,7 +40,7 @@ public class BookController {
 
     @GetMapping
     @Operation(summary = "Get all books", description = "Get a list of all available books, "
-            + "pagination and sorting are also included")
+            + "you can open a specific page")
     public List<BookDto> getAll(@RequestParam(defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, 20);
         return bookService.findAll(pageable);

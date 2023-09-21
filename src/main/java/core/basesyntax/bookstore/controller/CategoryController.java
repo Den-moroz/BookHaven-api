@@ -47,7 +47,7 @@ public class CategoryController {
 
     @GetMapping
     @Operation(summary = "Get all categories", description = "Get a list of all category, "
-            + "pagination and sorting are also included")
+            + "you can open a specific page")
     public List<CategoryDto> getAll(@RequestParam(defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(page, 20);
         return categoryService.findAll(pageable);

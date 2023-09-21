@@ -18,6 +18,7 @@ import core.basesyntax.bookstore.service.OrderService;
 import core.basesyntax.bookstore.service.UserService;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -92,6 +93,7 @@ public class OrderServiceImpl implements OrderService {
             orderItem.setOrder(order);
             orderItems.add(orderItemRepository.save(orderItem));
         }
+        cartItems = new ArrayList<>();
         return orderItems;
     }
 

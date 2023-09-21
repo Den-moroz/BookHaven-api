@@ -1,7 +1,5 @@
 package core.basesyntax.bookstore.config;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 import core.basesyntax.bookstore.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -39,7 +37,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
                         auth -> auth
-                                .requestMatchers("/auth/**")
+                                .requestMatchers("/auth/**", "/swagger-ui/**",
+                                        "/v3/api-docs/**", "/error")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()
@@ -49,7 +48,6 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class)
                 .userDetailsService(userDetailService)
-                .httpBasic(withDefaults())
                 .build();
     }
 

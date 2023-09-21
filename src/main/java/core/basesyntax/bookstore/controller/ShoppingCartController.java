@@ -34,8 +34,7 @@ public class ShoppingCartController {
     }
 
     @GetMapping
-    @Operation(summary = "Get a shopping cart",
-            description = "Pagination and sorting are also included")
+    @Operation(summary = "Get a shopping cart")
     public ShoppingCartDto getShoppingCart() {
         return shoppingCartService.getShoppingCart();
     }
