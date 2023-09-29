@@ -1,9 +1,10 @@
-# Book Store API
+# **Book Store API**
 
-Welcome to the Book Store API! This project was inspired by the need for a robust and efficient solution to manage the operations of a book store. Whether you're running a physical bookstore or an online platform, our API provides the tools you need to streamline your book inventory, manage customer data, and handle sales transactions seamlessly.
+📚 Welcome to the Book Store API! This project was inspired by the need for a robust and efficient solution to manage the operations of a book store. Whether you're running a physical bookstore or an online platform, our API provides the tools you need to streamline your book inventory, manage customer data, and handle sales transactions seamlessly.
 
 ## Table of Contents
 
+- [Features](#features)
 - [Technologies and Tools Used](#technologies-and-tools-used)
 - [Controller Functionalities](#controller-functionalities)
 - [Installation and Usage](#installation-and-usage)
@@ -12,6 +13,22 @@ Welcome to the Book Store API! This project was inspired by the need for a robus
 - [Postman Collection](#postman-collection)
 - [Challenges Faced](#challenges-faced)
 - [Conclusion](#conclusion)
+
+## Features
+
+📚 Dynamic Book Operations: Real-time book data for a thrilling search experience, including creation, retrieval, update, and deletion of books.
+
+📖 Robust Category Management: Effortlessly navigate genres. Admins can create, update, delete categories, and retrieve books by category.
+
+🛒 Personalized Shopping Cart: Tailor your reading list with ease. Users can create, retrieve, update, and delete cart items.
+
+📦 Effortless Order Management: Handle orders seamlessly. Create orders, update order status, and retrieve order history hassle-free.
+
+🔍 Comprehensive Filtering: Easily find books using multiple filters, including title, author, price range, and more.
+
+🔒 Secure Authentication: I've implemented robust security measures like JWT-based authentication.
+
+📝 Detailed Documentation: Explore and interact with our API easily through the Swagger documentation.
 
 ## Technologies and Tools Used
 
@@ -43,7 +60,8 @@ This API is built using modern technologies and tools to ensure reliability, sec
 
 # Installation and Usage
 
-You can interact with the Book Store API in two ways:
+<h3>I've deployed the Book Store API on AWS, so you don't need to install anything to test our app.</h3>
+<h3>You can interact with Book Store API in two ways:</h3>
 
 1. **Using Swagger (No Installation Required)**
 
@@ -71,6 +89,7 @@ You can interact with the Book Store API in two ways:
    Before you begin, ensure you have the following prerequisites installed on your system:
 
     - [Java 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
+    - [Maven](https://maven.apache.org/download.cgi)
     - [MySQL database](https://www.mysql.com/downloads/)
     - [Docker](https://docs.docker.com/get-docker/)
 
@@ -112,9 +131,25 @@ You can interact with the Book Store API in two ways:
 For your convenience, i've created a Postman collection that includes sample requests for various API endpoints. You can download it [here](BookStore-api.postman_collection.json) and import it into your Postman workspace to get started quickly.
 
 ## Challenges Faced
-During the development of this project, i encountered a few challenges, such as data modeling complexities and security implementations. However, through collaboration and extensive testing, i successfully overcame these challenges to deliver a reliable and secure API.
+
+During the development of this project, I encountered several challenges that pushed my problem-solving skills to the limit. Here are some of the key challenges faced and the solutions implemented:
+
+### 1. Authentication Security
+
+Ensuring secure user authentication and authorization required a thorough understanding of Spring Security and JWT. I implemented robust security measures, including password hashing and token-based authentication.
+
+### 2. Error Handling and Logging
+
+Debugging errors and identifying issues in a complex system was a hurdle. I implemented detailed logging and exception handling, allowing for easier issue identification and resolution.
+
+### 3. Managing Hibernate Session and Transactions
+
+Ensuring data consistency, I employed session-per-request patterns with Spring, dedicating a Hibernate session to each HTTP request. Declarative transaction management maintained atomic operations and data integrity, even in failures.
+
+#### Feel free to reach out if you have any questions or need further details about any specific challenge faced during the development process. 
 
 ## Conclusion
 The Bookstore API provides a solid foundation for building a book-selling platform. Whether you're starting a new online bookstore or enhancing an existing one, this API can help you manage books, orders, and customers efficiently. Feel free to reach out if you have any questions or need assistance.
 
-### Happy coding!
+### **Happy coding!**
+
