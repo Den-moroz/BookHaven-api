@@ -1,6 +1,6 @@
-# **Book Store API**
+# **BookHaven API**
 
-📚 Welcome to the Book Store API! This project was inspired by the need for a robust and efficient solution to manage the operations of a book store. Whether you're running a physical bookstore or an online platform, our API provides the tools you need to streamline your book inventory, manage customer data, and handle sales transactions seamlessly.
+📚 Welcome to the BookHaven API! This project was inspired by the need for a robust and efficient solution to manage the operations of a book store. Whether you're running a physical bookstore or an online platform, our API provides the tools you need to streamline your book inventory, manage customer data, and handle sales transactions seamlessly.
 
 ## Table of Contents
 
@@ -149,7 +149,7 @@ Ensuring data consistency, I employed session-per-request patterns with Spring, 
 #### Feel free to reach out if you have any questions or need further details about any specific challenge faced during the development process. 
 
 ## Conclusion
-The Bookstore API provides a solid foundation for building a book-selling platform. Whether you're starting a new online bookstore or enhancing an existing one, this API can help you manage books, orders, and customers efficiently. Feel free to reach out if you have any questions or need assistance.
+The BookHaven API provides a solid foundation for building a book-selling platform. Whether you're starting a new online bookstore or enhancing an existing one, this API can help you manage books, orders, and customers efficiently. Feel free to reach out if you have any questions or need assistance.
 
 ### **Happy coding!**
 
